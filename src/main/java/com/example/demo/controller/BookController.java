@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.mode.Book;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +20,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/v1/book")
+@Api("Book 接口")
 public class BookController {
 
     @RequestMapping(value = "/books", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
+    @ApiOperation("返回测试的 book 列表")
     public List<Book> test() {
         List<Book> books = new ArrayList<>();
         Book b1 = new Book();
