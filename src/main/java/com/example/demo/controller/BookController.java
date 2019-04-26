@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.mode.Book;
+import com.example.demo.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;

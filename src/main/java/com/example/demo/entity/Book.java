@@ -1,4 +1,4 @@
-package com.example.demo.mode;
+package com.example.demo.entity;
 
 /**
  * @author youngbear
