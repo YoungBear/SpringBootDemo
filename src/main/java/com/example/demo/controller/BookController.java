@@ -1,13 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Book;
+import com.example.demo.entity.common.Result;
+import com.example.demo.exception.DemoException;
+import com.example.demo.service.IBookService;
+import com.example.demo.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,36 +25,33 @@ import java.util.List;
  * @description
  */
 @RestController
-@RequestMapping("/v1/book")
+@RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @Api("Book 接口")
 public class BookController {
 
-    @RequestMapping(value = "/books", method = RequestMethod.POST,
-            produces = "application/json;charset=UTF-8")
+    @Autowired
+    private IBookService bookService;
+
+    @RequestMapping(value = "/book-list", method = RequestMethod.POST)
     @ApiOperation("返回测试的 book 列表")
-    public List<Book> test() {
-        List<Book> books = new ArrayList<>();
-        Book b1 = new Book();
-        b1.setName("数学之美");
-        b1.setPublisher("人民邮电出版社");
-        b1.setAuther("吴军");
-        Book b2 = new Book();
-        b2.setName("重构 改善既有代码的设计");
-        b2.setPublisher("人民邮电出版社");
-        b2.setAuther("Martin Fowler");
-        Book b3 = new Book();
-        b3.setName("机器学习实战");
-        b3.setPublisher("人民邮电出版社");
-        b3.setAuther("Peter Harrington");
-        Book b4 = new Book();
-        b4.setName("Effective Java中文版");
-        b4.setPublisher("机械工业出版社");
-        b4.setAuther("Joshua Bloch");
-        books.add(b1);
-        books.add(b2);
-        books.add(b3);
-        books.add(b4);
-        return books;
+    public Result<Book> bookList() {
+        try {
+            List<Book> books = bookService.bookList();
+            return ResultUtils.success(books);
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+
+    }
+
+    @RequestMapping(value = "one-book", method = RequestMethod.POST)
+    public Result<Book> oneBook(@RequestBody Book book) {
+        try {
+            Book book1 = bookService.oneBook(book.getName(), book.getAuther(), book.getPublisher());
+            return ResultUtils.success(book1);
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
     }
 
 }
