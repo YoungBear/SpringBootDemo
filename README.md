@@ -122,7 +122,7 @@ public class BookController {
 
 ```
 192:SpringBootDemo youngbear$ curl http://localhost:8080/v1/book/books -X POST
-[{"name":"数学之美","publisher":"人民邮电出版社","auther":"吴军"},{"name":"重构 改善既有代码的设计","publisher":"人民邮电出版社","auther":"Martin Fowler"},{"name":"机器学习实战","publisher":"人民邮电出版社","auther":"Peter Harrington"},{"name":"Effective Java中文版","publisher":"机械工业出版社","auther":"Joshua Bloch"}]
+[{"name":"数学之美","publisher":"人民邮电出版社","author":"吴军"},{"name":"重构 改善既有代码的设计","publisher":"人民邮电出版社","author":"Martin Fowler"},{"name":"机器学习实战","publisher":"人民邮电出版社","author":"Peter Harrington"},{"name":"Effective Java中文版","publisher":"机械工业出版社","author":"Joshua Bloch"}]
 ```
 
 
@@ -981,22 +981,22 @@ curl -X POST "http://localhost:8080/v1/book/book-list" -H  "accept: application/
       {
         "name": "数学之美",
         "publisher": "人民邮电出版社",
-        "auther": "吴军"
+        "author": "吴军"
       },
       {
         "name": "重构 改善既有代码的设计",
         "publisher": "人民邮电出版社",
-        "auther": "Martin Fowler"
+        "author": "Martin Fowler"
       },
       {
         "name": "机器学习实战",
         "publisher": "人民邮电出版社",
-        "auther": "Peter Harrington"
+        "author": "Peter Harrington"
       },
       {
         "name": "Effective Java中文版",
         "publisher": "机械工业出版社",
-        "auther": "Joshua Bloch"
+        "author": "Joshua Bloch"
       }
     ]
   }
@@ -1008,7 +1008,7 @@ curl -X POST "http://localhost:8080/v1/book/book-list" -H  "accept: application/
 **请求：**
 
 ```shell
-curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/json;charset=UTF-8" -H  "Content-Type: application/json" -d "{  \"auther\": \"毛泽东\",  \"name\": \"毛泽东选集\",  \"publisher\": \"人民出版社\"}"
+curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/json;charset=UTF-8" -H  "Content-Type: application/json" -d "{  \"author\": \"毛泽东\",  \"name\": \"毛泽东选集\",  \"publisher\": \"人民出版社\"}"
 ```
 
 **返回结果：**
@@ -1023,7 +1023,7 @@ curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/j
       {
         "name": "毛泽东选集",
         "publisher": "人民出版社",
-        "auther": "毛泽东"
+        "author": "毛泽东"
       }
     ]
   }
@@ -1035,7 +1035,7 @@ curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/j
 **请求：**
 
 ```shell
-curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/json;charset=UTF-8" -H  "Content-Type: application/json" -d "{  \"auther\": \"毛泽东\",  \"publisher\": \"人民出版社\"}"
+curl -X POST "http://localhost:8080/v1/book/one-book" -H  "accept: application/json;charset=UTF-8" -H  "Content-Type: application/json" -d "{  \"author\": \"毛泽东\",  \"publisher\": \"人民出版社\"}"
 ```
 
 **返回结果：**
@@ -1072,7 +1072,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @date 2019-05-04 21:53
  * @blog https://blog.csdn.net/next_second
  * @github https://github.com/YoungBear
- * @description 未知异常处理
+ * @description 全局异常处理
  */
 
 @RestControllerAdvice

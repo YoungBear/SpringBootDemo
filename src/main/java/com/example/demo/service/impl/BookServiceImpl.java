@@ -26,19 +26,19 @@ public class BookServiceImpl implements IBookService {
         Book b1 = new Book();
         b1.setName("数学之美");
         b1.setPublisher("人民邮电出版社");
-        b1.setAuther("吴军");
+        b1.setAuthor("吴军");
         Book b2 = new Book();
         b2.setName("重构 改善既有代码的设计");
         b2.setPublisher("人民邮电出版社");
-        b2.setAuther("Martin Fowler");
+        b2.setAuthor("Martin Fowler");
         Book b3 = new Book();
         b3.setName("机器学习实战");
         b3.setPublisher("人民邮电出版社");
-        b3.setAuther("Peter Harrington");
+        b3.setAuthor("Peter Harrington");
         Book b4 = new Book();
         b4.setName("Effective Java中文版");
         b4.setPublisher("机械工业出版社");
-        b4.setAuther("Joshua Bloch");
+        b4.setAuthor("Joshua Bloch");
         books.add(b1);
         books.add(b2);
         books.add(b3);
@@ -53,7 +53,7 @@ public class BookServiceImpl implements IBookService {
         }
         Book book = new Book();
         book.setName(name);
-        book.setAuther(author);
+        book.setAuthor(author);
         book.setPublisher(publisher);
         return book;
     }

@@ -47,7 +47,7 @@ public class BookController {
     @RequestMapping(value = "one-book", method = RequestMethod.POST)
     public Result<Book> oneBook(@RequestBody Book book) {
         try {
-            Book book1 = bookService.oneBook(book.getName(), book.getAuther(), book.getPublisher());
+            Book book1 = bookService.oneBook(book.getName(), book.getAuthor(), book.getPublisher());
             return ResultUtils.success(book1);
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);

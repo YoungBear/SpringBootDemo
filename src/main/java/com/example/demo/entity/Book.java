@@ -12,7 +12,7 @@ public class Book {
 
     private String name;
     private String publisher;
-    private String auther;
+    private String author;
 
     public String getName() {
         return name;
@@ -30,11 +30,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String getAuther() {
-        return auther;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuther(String auther) {
-        this.auther = auther;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
