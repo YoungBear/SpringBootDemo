@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author youngbear
@@ -48,6 +49,14 @@ public class GsonUtilsTest {
                 "    ]\n" +
                 "  }\n" +
                 "}";
+
+        Result<Map> mapResult = GsonUtils.parseString(json, Map.class);
+        Assert.assertEquals(0, mapResult.getCode().intValue());
+        Assert.assertEquals(4, mapResult.getResult().getTotal().intValue());
+
+        List<Map> mapList = mapResult.getResult().getData();
+        Assert.assertEquals(4, mapList.size());
+
         Result<Book> bookResult = GsonUtils.parseString(json, Book.class);
         Assert.assertEquals(0, bookResult.getCode().intValue());
         Assert.assertEquals(4, bookResult.getResult().getTotal().intValue());
