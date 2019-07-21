@@ -1401,10 +1401,22 @@ package com.example.demo.dao;
 import com.example.demo.entity.EmployeeEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IEmployeeDao {
-    Employee findEmployeeById(Integer id);
+
+    Integer add(EmployeeEntity employeeEntity);
+
+    Integer delete(Integer id);
+
+    void update(EmployeeEntity employeeEntity);
+
+    EmployeeEntity findEmployeeById(Integer id);
+
+    List<EmployeeEntity> selectAll();
 }
+
 ```
 
 对应xml：
@@ -1421,10 +1433,31 @@ public interface IEmployeeDao {
         <result column="SALARY" jdbcType="DECIMAL" property="salary"/>
         <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
+
+    <insert id="add" parameterType="com.example.demo.entity.EmployeeEntity">
+        INSERT INTO EMPLOYEE (ID, NAME, HIRE_DATE, SALARY, DEPT_NO)
+            VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
+    </insert>
+
+    <delete id="delete" parameterType="INTEGER">
+        DELETE FROM EMPLOYEE WHERE ID = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.example.demo.entity.EmployeeEntity">
+        UPDATE EMPLOYEE SET
+            NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
+        WHERE ID = #{id}
+    </update>
+
     <select id="findEmployeeById" resultMap="EmployeeResultMap">
         SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE
             WHERE ID = #{id}
     </select>
+
+    <select id="selectAll" resultMap="EmployeeResultMap">
+        SELECT * FROM EMPLOYEE
+    </select>
+
 </mapper>
 ```
 
@@ -1439,10 +1472,54 @@ package com.example.demo.service;
 
 import com.example.demo.entity.EmployeeEntity;
 
+import java.util.List;
+
+/**
+ * @author youngbear
+ * @email youngbear@aliyun.com
+ * @date 2019-07-21 18:44
+ * @blog https://blog.csdn.net/next_second
+ * @github https://github.com/YoungBear
+ * @description
+ */
 public interface IEmployeeService {
 
-    Employee queryEmployee(Integer id);
+    /**
+     * 添加一个 Employee
+     * @param employeeEntity
+     * @return 1-添加成功
+     */
+    Integer addEmployee(EmployeeEntity employeeEntity);
+
+    /**
+     * 根据 id 删除一个 Employee
+     * @param id
+     * @return 1-删除成功
+     */
+    Integer deleteEmployee(Integer id);
+
+    /**
+     * 更新一个 Employee
+     * @param employeeEntity
+     * @return 更新成功后的结果
+     */
+    EmployeeEntity updateEmployee(EmployeeEntity employeeEntity);
+
+    /**
+     * 根据 id 查询 Employee
+     * @param id
+     * @return
+     */
+    EmployeeEntity queryEmployee(Integer id);
+
+    /**
+     * 查询所有 Employee
+     * @return
+     */
+    List<EmployeeEntity> selectAll();
+
 }
+
 
 ```
 
@@ -1457,6 +1534,16 @@ import com.example.demo.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * @author youngbear
+ * @email youngbear@aliyun.com
+ * @date 2019-07-21 18:44
+ * @blog https://blog.csdn.net/next_second
+ * @github https://github.com/YoungBear
+ * @description
+ */
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
 
@@ -1464,11 +1551,31 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @Override
-    public Employee queryEmployee(Integer id) {
+    public Integer addEmployee(EmployeeEntity employeeEntity) {
+        return employeeDao.add(employeeEntity);
+    }
+
+    @Override
+    public Integer deleteEmployee(Integer id) {
+        return employeeDao.delete(id);
+    }
+
+    @Override
+    public EmployeeEntity updateEmployee(EmployeeEntity employeeEntity) {
+        employeeDao.update(employeeEntity);
+        return employeeDao.findEmployeeById(employeeEntity.getId());
+    }
+
+    @Override
+    public EmployeeEntity queryEmployee(Integer id) {
         return employeeDao.findEmployeeById(id);
     }
-}
 
+    @Override
+    public List<EmployeeEntity> selectAll() {
+        return employeeDao.selectAll();
+    }
+}
 ```
 
 Controller:
@@ -1486,11 +1593,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author youngbear
+ * @email youngbear@aliyun.com
+ * @date 2019-07-21 18:43
+ * @blog https://blog.csdn.net/next_second
+ * @github https://github.com/YoungBear
+ * @description
+ */
 @RestController
 @Api("Employee 接口")
 @RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -1499,12 +1611,55 @@ public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
 
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation("根据id查询Employee")
+    public Result<Integer> add(
+            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+        try {
+            return ResultUtils.success(employeeService.addEmployee(employeeEntity));
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @ApiOperation("根据id删除Employee")
+    public Result<Integer> deleteById(
+            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+        try {
+            return ResultUtils.success(employeeService.deleteEmployee(id));
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("更新 Employee")
+    public Result<EmployeeEntity> updateEmployee(
+            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+        try {
+            return ResultUtils.success(employeeService.updateEmployee(employeeEntity));
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+    }
+
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ApiOperation("根据id查询Employee")
     public Result<EmployeeEntity> queryById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
             return ResultUtils.success(employeeService.queryEmployee(id));
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+    }
+
+    @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
+    @ApiOperation("根据id查询Employee")
+    public Result<EmployeeEntity> queryAll() {
+        try {
+            return ResultUtils.success(employeeService.selectAll());
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);
         }

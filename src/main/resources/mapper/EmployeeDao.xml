@@ -9,8 +9,29 @@
         <result column="SALARY" jdbcType="DECIMAL" property="salary"/>
         <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
+
+    <insert id="add" parameterType="com.example.demo.entity.EmployeeEntity">
+        INSERT INTO EMPLOYEE (ID, NAME, HIRE_DATE, SALARY, DEPT_NO)
+            VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
+    </insert>
+
+    <delete id="delete" parameterType="INTEGER">
+        DELETE FROM EMPLOYEE WHERE ID = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.example.demo.entity.EmployeeEntity">
+        UPDATE EMPLOYEE SET
+            NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
+        WHERE ID = #{id}
+    </update>
+
     <select id="findEmployeeById" resultMap="EmployeeResultMap">
         SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE
             WHERE ID = #{id}
     </select>
+
+    <select id="selectAll" resultMap="EmployeeResultMap">
+        SELECT * FROM EMPLOYEE
+    </select>
+
 </mapper>
