@@ -32,8 +32,8 @@ public class EmployeeController {
     private IEmployeeService employeeService;
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
-    @ApiOperation("测试 hi")
-    public Result<EmployeeEntity> hi(
+    @ApiOperation("根据id查询Employee")
+    public Result<EmployeeEntity> queryById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
             return ResultUtils.success(employeeService.queryEmployee(id));
