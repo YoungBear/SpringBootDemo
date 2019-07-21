@@ -30,6 +30,9 @@
         </triggeringPolicy>
     </appender>
 
+    <!-- mybatis 显示日志配置 -->
+    <logger name="com.example.demo.dao" level="DEBUG" />
+
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />

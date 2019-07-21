@@ -1,2 +1,9 @@
 server:
   port: 8888
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/springbootdemo
+    username: bearyang
+    password: 123456
+mybatis:
+  mapper-locations: classpath:mapper/*.xml

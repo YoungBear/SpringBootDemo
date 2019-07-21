@@ -1318,4 +1318,232 @@ dev,test,prod分别表示开发，测试，生产环境。在实际的工作中�
 
 
 
+## 10. 集成数据库
+
+### 10.1 添加依赖
+
+```xml
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+```
+
+
+
+### 10.2 添加数据库配置
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/springbootdemo
+    username: bearyang
+    password: 123456
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+```
+
+
+
+### 10.3 实现java代码
+
+首先创建数据库相关信息：
+
+```mysql
+-- create database
+CREATE DATABASE springbootdemo;
+
+-- create table
+CREATE TABLE EMPLOYEE (
+    ID INT UNSIGNED AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL,
+    HIRE_DATE DATE,
+    SALARY DECIMAL(10,2),
+    DEPT_NO INT(2),
+    PRIMARY KEY (ID)
+);
+
+-- insert data
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小杨', '2010-09-14', 8000.0, '06');
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小张', '2010-09-15', 9000.0, '05');
+
+```
+
+#### 10.3.1 实体类
+
+```java
+package com.example.demo.entity;
+
+public class Employee {
+    private Integer id;
+    private String name;
+    private String hireDate;
+    private Float salary;
+    private Integer deptNo;
+    // 省略 getter and setter
+}
+```
+
+#### 10.3.2 DAO代码
+
+java 代码：
+
+```java
+package com.example.demo.dao;
+
+import com.example.demo.entity.Employee;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface IEmployeeDao {
+    Employee findEmployeeById(Integer id);
+}
+```
+
+对应xml：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.IEmployeeDao">
+
+    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.Employee">
+        <result column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>
+        <result column="SALARY" jdbcType="DECIMAL" property="salary"/>
+        <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
+    </resultMap>
+    <select id="findEmployeeById" resultMap="EmployeeResultMap">
+        SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE
+            WHERE ID = #{id}
+    </select>
+</mapper>
+```
+
+其中，名称为EmployeeResultMap的resultMap，作用是将数据库表的字段和java实体类的属性映射起来，在下边的查询语句中，可以直接使用resultMap="xxx"，即可实现返回结果为实体类的类型。
+
+#### 10.3.2 接口相关代码
+
+IService:
+
+```java
+package com.example.demo.service;
+
+import com.example.demo.entity.Employee;
+
+public interface IEmployeeService {
+
+    Employee queryEmployee(Integer id);
+}
+
+```
+
+ServiceImpl:
+
+```java
+package com.example.demo.service.impl;
+
+import com.example.demo.dao.IEmployeeDao;
+import com.example.demo.entity.Employee;
+import com.example.demo.service.IEmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmployeeServiceImpl implements IEmployeeService {
+
+    @Autowired
+    private IEmployeeDao employeeDao;
+
+    @Override
+    public Employee queryEmployee(Integer id) {
+        return employeeDao.findEmployeeById(id);
+    }
+}
+
+```
+
+Controller:
+
+```java
+package com.example.demo.controller;
+
+import com.example.demo.entity.Employee;
+import com.example.demo.entity.common.Result;
+import com.example.demo.exception.DemoException;
+import com.example.demo.service.IEmployeeService;
+import com.example.demo.utils.ResultUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Api("Employee 接口")
+@RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+public class EmployeeController {
+
+    @Autowired
+    private IEmployeeService employeeService;
+
+    @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
+    @ApiOperation("测试 hi")
+    public Result<Employee> hi(
+            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+        try {
+            return ResultUtils.success(employeeService.queryEmployee(id));
+        } catch (DemoException demoException) {
+            return ResultUtils.error(demoException);
+        }
+    }
+}
+```
+
+### 10.4 运行结果
+
+get请求：`http://localhost:8888/employee/query/3`
+
+通过postman请求结果：
+
+![](./pictures/employee-query-by-id.png)
+
+
+
+### 10.5 日志配置显示sql日志
+
+在 `logback-spring.xml` 中配置：
+
+```xml
+    <!-- mybatis 显示日志配置 -->
+    <logger name="com.example.demo.dao" level="DEBUG" />
+```
+
+其中，`com.example.demo.dao` 表示dao代码所在目录。
+
+这样，我们就可以看到sql执行的日志了，如上边请求的日志为：
+
+```
+2019-07-21 19:14:21.297 [http-nio-8888-exec-2] DEBUG com.example.demo.dao.IEmployeeDao.findEmployeeById - ==>  Preparing: SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE WHERE ID = ? 
+2019-07-21 19:14:21.349 [http-nio-8888-exec-2] DEBUG com.example.demo.dao.IEmployeeDao.findEmployeeById - ==> Parameters: 2(Integer)
+2019-07-21 19:14:21.423 [http-nio-8888-exec-2] DEBUG com.example.demo.dao.IEmployeeDao.findEmployeeById - <==      Total: 1
+```
+
+
+
+
+
 ## [Demo GitHub地址](https://github.com/YoungBear/SpringBootDemo)
+
