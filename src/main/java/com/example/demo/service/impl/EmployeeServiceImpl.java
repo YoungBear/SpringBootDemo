@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.IEmployeeDao;
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import com.example.demo.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @Override
-    public Employee queryEmployee(Integer id) {
+    public EmployeeEntity queryEmployee(Integer id) {
         return employeeDao.findEmployeeById(id);
     }
 }

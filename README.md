@@ -1398,7 +1398,7 @@ java 代码：
 ```java
 package com.example.demo.dao;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -1414,7 +1414,7 @@ public interface IEmployeeDao {
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.IEmployeeDao">
 
-    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.Employee">
+    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeEntity">
         <result column="ID" jdbcType="INTEGER" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>
@@ -1437,7 +1437,7 @@ IService:
 ```java
 package com.example.demo.service;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 
 public interface IEmployeeService {
 
@@ -1452,7 +1452,7 @@ ServiceImpl:
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.IEmployeeDao;
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import com.example.demo.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1476,7 +1476,7 @@ Controller:
 ```java
 package com.example.demo.controller;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import com.example.demo.entity.common.Result;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 
 /**
  * @author youngbear
@@ -12,5 +12,5 @@ import com.example.demo.entity.Employee;
  */
 public interface IEmployeeService {
 
-    Employee queryEmployee(Integer id);
+    EmployeeEntity queryEmployee(Integer id);
 }

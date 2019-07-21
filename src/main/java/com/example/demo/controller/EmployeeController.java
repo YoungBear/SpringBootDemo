@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import com.example.demo.entity.common.Result;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
@@ -33,7 +33,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ApiOperation("测试 hi")
-    public Result<Employee> hi(
+    public Result<EmployeeEntity> hi(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
             return ResultUtils.success(employeeService.queryEmployee(id));

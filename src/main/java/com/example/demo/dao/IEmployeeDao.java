@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface IEmployeeDao {
 
-    Employee findEmployeeById(Integer id);
+    EmployeeEntity findEmployeeById(Integer id);
 }

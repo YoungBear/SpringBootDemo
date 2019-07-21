@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.IEmployeeDao">
 
-    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.Employee">
+    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeEntity">
         <result column="ID" jdbcType="INTEGER" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>

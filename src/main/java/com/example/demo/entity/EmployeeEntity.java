@@ -8,7 +8,7 @@ package com.example.demo.entity;
  * @github https://github.com/YoungBear
  * @description
  */
-public class Employee {
+public class EmployeeEntity {
     private Integer id;
     private String name;
     private String hireDate;
