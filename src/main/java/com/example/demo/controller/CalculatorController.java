@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = "calculator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "calculator", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CalculatorController {
 
     @RequestMapping(value = "divide", method = RequestMethod.POST)

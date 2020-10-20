@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api("Hello 测试接口")
-@RequestMapping(value = "hello", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "hello", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HelloController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
 

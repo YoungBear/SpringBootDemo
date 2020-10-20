@@ -25,7 +25,7 @@ import java.util.List;
  * @description
  */
 @RestController
-@RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api("Book 接口")
 public class BookController {
 

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Api("Employee 接口")
-@RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
 
     @Autowired
