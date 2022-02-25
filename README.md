@@ -86,9 +86,9 @@ logback-spring.xml的例子：
 访问时，日志输出为：
 
 ```
-2018-11-28 23:14:50.237 [http-nio-8080-exec-1] INFO  com.example.demo.controller.HelloController - info Hello
-2018-11-28 23:14:50.246 [http-nio-8080-exec-1] WARN  com.example.demo.controller.HelloController - warn Hello
-2018-11-28 23:14:50.247 [http-nio-8080-exec-1] ERROR com.example.demo.controller.HelloController - error Hello
+2022-02-25T22:32:49.434 CST+08:00 [http-nio-8888-exec-1] INFO  com.example.demo.service.impl.HelloServiceImpl:27 - info Hello null
+2022-02-25T22:32:49.434 CST+08:00 [http-nio-8888-exec-1] WARN  com.example.demo.service.impl.HelloServiceImpl:28 - warn Hello null
+2022-02-25T22:32:49.435 CST+08:00 [http-nio-8888-exec-1] ERROR com.example.demo.service.impl.HelloServiceImpl:29 - error Hello null
 ```
 
 ## 3. 返回 Json 串
