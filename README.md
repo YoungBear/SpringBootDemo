@@ -28,11 +28,23 @@ public class HelloController {
 根据Level的级别，优先级大的优先输出，优先级从大到小为：
 `ERROR>WARN>INFO>DEBUG>TRACE`
 
-logback.xml的例子：
+
+
+```
+%d{yyyy-MM-dd'T'HH:mm:ss.SSS zXXX} 表示显示带时区的时间格式，如：
+022-02-25T22:18:54.373 CST+08:00 [main] INFO  com.example.demo.DemoApplication:61 - xxx
+```
+
+
+
+logback-spring.xml的例子：
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
+    <!-- springboot 提供的显示颜色的工具 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 
     <property name="LOG_HOME" value="/Users/youngbear/logs" />
     <property name="PROJECT_NAME" value="springbootdemo" />
@@ -40,7 +52,7 @@ logback.xml的例子：
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%L表示打印日志所在文件的行数，%n是换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}:%L - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS zXXX} [%thread] %-5level %logger{50}:%L - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- 输出到文件 -->
@@ -55,7 +67,7 @@ logback.xml的例子：
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%L表示打印日志所在文件的行数，%n是换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}:%L - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS zXXX} [%thread] %-5level %logger{50}:%L - %msg%n</pattern>
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
