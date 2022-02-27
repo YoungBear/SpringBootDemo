@@ -1,5 +1,8 @@
 -- create database
-CREATE DATABASE springbootdemo;
+CREATE DATABASE springbootdemo DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- create user and grant
+create user bearyang@localhost identified by '123456';
+grant all privileges on springbootdemo.* to bearyang@localhost;
 
 -- create table
 CREATE TABLE EMPLOYEE (
