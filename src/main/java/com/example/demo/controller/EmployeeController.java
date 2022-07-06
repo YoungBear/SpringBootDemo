@@ -73,7 +73,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @ApiOperation("根据id查询Employee")
+    @ApiOperation("查询Employee列表")
     public Result<EmployeeEntity> queryAll() {
         try {
             return ResultUtils.success(employeeService.selectAll());

@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 /**
  * @author youngbear
  * @email youngbear@aliyun.com
@@ -11,7 +14,7 @@ package com.example.demo.entity;
 public class EmployeeEntity {
     private Integer id;
     private String name;
-    private String hireDate;
+    private LocalDateTime hireDate;
     private Float salary;
     private Integer deptNo;
 
@@ -31,11 +34,11 @@ public class EmployeeEntity {
         this.name = name;
     }
 
-    public String getHireDate() {
+    public LocalDateTime getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(String hireDate) {
+    public void setHireDate(LocalDateTime hireDate) {
         this.hireDate = hireDate;
     }
 
@@ -53,5 +56,9 @@ public class EmployeeEntity {
 
     public void setDeptNo(Integer deptNo) {
         this.deptNo = deptNo;
+    }
+
+    public long getHireDateTimestamp() {
+        return hireDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }
