@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.IEmployeeDao;
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import com.example.demo.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @Override
-    public Integer addEmployee(EmployeeEntity employeeEntity) {
-        return employeeDao.add(employeeEntity);
+    public Integer addEmployee(EmployeeVo employeeVo) {
+        return employeeDao.add(employeeVo);
     }
 
     @Override
@@ -33,18 +33,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public EmployeeEntity updateEmployee(EmployeeEntity employeeEntity) {
-        employeeDao.update(employeeEntity);
-        return employeeDao.findEmployeeById(employeeEntity.getId());
+    public EmployeeVo updateEmployee(EmployeeVo employeeVo) {
+        employeeDao.update(employeeVo);
+        return employeeDao.findEmployeeById(employeeVo.getId());
     }
 
     @Override
-    public EmployeeEntity queryEmployee(Integer id) {
+    public EmployeeVo queryEmployee(Integer id) {
         return employeeDao.findEmployeeById(id);
     }
 
     @Override
-    public List<EmployeeEntity> selectAll() {
+    public List<EmployeeVo> selectAll() {
         return employeeDao.selectAll();
     }
 }

@@ -1410,7 +1410,7 @@ java 代码：
 ```java
 package com.example.demo.dao;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -1418,15 +1418,15 @@ import java.util.List;
 @Mapper
 public interface IEmployeeDao {
 
-    Integer add(EmployeeEntity employeeEntity);
+    Integer add(EmployeeVo employeeVo);
 
     Integer delete(Integer id);
 
-    void update(EmployeeEntity employeeEntity);
+    void update(EmployeeVo employeeVo);
 
-    EmployeeEntity findEmployeeById(Integer id);
+    EmployeeVo findEmployeeById(Integer id);
 
-    List<EmployeeEntity> selectAll();
+    List<EmployeeVo> selectAll();
 }
 
 ```
@@ -1438,7 +1438,7 @@ public interface IEmployeeDao {
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.IEmployeeDao">
 
-    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeEntity">
+    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeVo">
         <result column="ID" jdbcType="INTEGER" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>
@@ -1446,24 +1446,24 @@ public interface IEmployeeDao {
         <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
 
-    <insert id="add" parameterType="com.example.demo.entity.EmployeeEntity">
+    <insert id="add" parameterType="com.example.demo.entity.EmployeeVo">
         INSERT INTO EMPLOYEE (ID, NAME, HIRE_DATE, SALARY, DEPT_NO)
-            VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
+        VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
     </insert>
 
     <delete id="delete" parameterType="INTEGER">
         DELETE FROM EMPLOYEE WHERE ID = #{id}
     </delete>
 
-    <update id="update" parameterType="com.example.demo.entity.EmployeeEntity">
+    <update id="update" parameterType="com.example.demo.entity.EmployeeVo">
         UPDATE EMPLOYEE SET
-            NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
+        NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
         WHERE ID = #{id}
     </update>
 
     <select id="findEmployeeById" resultMap="EmployeeResultMap">
         SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE
-            WHERE ID = #{id}
+        WHERE ID = #{id}
     </select>
 
     <select id="selectAll" resultMap="EmployeeResultMap">
@@ -1482,7 +1482,7 @@ IService:
 ```java
 package com.example.demo.service;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 
 import java.util.List;
 
@@ -1498,10 +1498,10 @@ public interface IEmployeeService {
 
     /**
      * 添加一个 Employee
-     * @param employeeEntity
+     * @param employeeVo
      * @return 1-添加成功
      */
-    Integer addEmployee(EmployeeEntity employeeEntity);
+    Integer addEmployee(EmployeeVo employeeVo);
 
     /**
      * 根据 id 删除一个 Employee
@@ -1512,23 +1512,23 @@ public interface IEmployeeService {
 
     /**
      * 更新一个 Employee
-     * @param employeeEntity
+     * @param employeeVo
      * @return 更新成功后的结果
      */
-    EmployeeEntity updateEmployee(EmployeeEntity employeeEntity);
+    EmployeeVo updateEmployee(EmployeeVo employeeVo);
 
     /**
      * 根据 id 查询 Employee
      * @param id
      * @return
      */
-    EmployeeEntity queryEmployee(Integer id);
+    EmployeeVo queryEmployee(Integer id);
 
     /**
      * 查询所有 Employee
      * @return
      */
-    List<EmployeeEntity> selectAll();
+    List<EmployeeVo> selectAll();
 
 }
 
@@ -1541,7 +1541,7 @@ ServiceImpl:
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.IEmployeeDao;
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import com.example.demo.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1563,8 +1563,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @Override
-    public Integer addEmployee(EmployeeEntity employeeEntity) {
-        return employeeDao.add(employeeEntity);
+    public Integer addEmployee(EmployeeVo employeeVo) {
+        return employeeDao.add(employeeVo);
     }
 
     @Override
@@ -1573,18 +1573,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public EmployeeEntity updateEmployee(EmployeeEntity employeeEntity) {
-        employeeDao.update(employeeEntity);
-        return employeeDao.findEmployeeById(employeeEntity.getId());
+    public EmployeeVo updateEmployee(EmployeeVo employeeVo) {
+        employeeDao.update(employeeVo);
+        return employeeDao.findEmployeeById(employeeVo.getId());
     }
 
     @Override
-    public EmployeeEntity queryEmployee(Integer id) {
+    public EmployeeVo queryEmployee(Integer id) {
         return employeeDao.findEmployeeById(id);
     }
 
     @Override
-    public List<EmployeeEntity> selectAll() {
+    public List<EmployeeVo> selectAll() {
         return employeeDao.selectAll();
     }
 }
@@ -1595,7 +1595,7 @@ Controller:
 ```java
 package com.example.demo.controller;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import com.example.demo.entity.common.Result;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
@@ -1626,9 +1626,9 @@ public class EmployeeController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("根据id查询Employee")
     public Result<Integer> add(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+            @ApiParam(name = "employeeVo", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.addEmployee(employeeEntity));
+            return ResultUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);
         }
@@ -1647,10 +1647,10 @@ public class EmployeeController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ApiOperation("更新 Employee")
-    public Result<EmployeeEntity> updateEmployee(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+    public Result<EmployeeVo> updateEmployee(
+            @ApiParam(name = "employeeVo", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.updateEmployee(employeeEntity));
+            return ResultUtils.success(employeeService.updateEmployee(employeeVo));
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);
         }
@@ -1658,7 +1658,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ApiOperation("根据id查询Employee")
-    public Result<EmployeeEntity> queryById(
+    public Result<EmployeeVo> queryById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
             return ResultUtils.success(employeeService.queryEmployee(id));
@@ -1669,7 +1669,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
     @ApiOperation("根据id查询Employee")
-    public Result<EmployeeEntity> queryAll() {
+    public Result<EmployeeVo> queryAll() {
         try {
             return ResultUtils.success(employeeService.selectAll());
         } catch (DemoException demoException) {

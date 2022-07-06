@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public interface IEmployeeService {
 
     /**
      * 添加一个 Employee
-     * @param employeeEntity
+     * @param employeeVo
      * @return 1-添加成功
      */
-    Integer addEmployee(EmployeeEntity employeeEntity);
+    Integer addEmployee(EmployeeVo employeeVo);
 
     /**
      * 根据 id 删除一个 Employee
@@ -30,22 +30,22 @@ public interface IEmployeeService {
 
     /**
      * 更新一个 Employee
-     * @param employeeEntity
+     * @param employeeVo
      * @return 更新成功后的结果
      */
-    EmployeeEntity updateEmployee(EmployeeEntity employeeEntity);
+    EmployeeVo updateEmployee(EmployeeVo employeeVo);
 
     /**
      * 根据 id 查询 Employee
      * @param id
      * @return
      */
-    EmployeeEntity queryEmployee(Integer id);
+    EmployeeVo queryEmployee(Integer id);
 
     /**
      * 查询所有 Employee
      * @return
      */
-    List<EmployeeEntity> selectAll();
+    List<EmployeeVo> selectAll();
 
 }

@@ -11,7 +11,7 @@ import java.time.ZoneId;
  * @github https://github.com/YoungBear
  * @description
  */
-public class EmployeeEntity {
+public class EmployeeVo {
     private Integer id;
     private String name;
     private LocalDateTime hireDate;

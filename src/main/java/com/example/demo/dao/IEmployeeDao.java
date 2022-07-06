@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
 @Mapper
 public interface IEmployeeDao {
 
-    Integer add(EmployeeEntity employeeEntity);
+    Integer add(EmployeeVo employeeVo);
 
     Integer delete(Integer id);
 
-    void update(EmployeeEntity employeeEntity);
+    void update(EmployeeVo employeeVo);
 
-    EmployeeEntity findEmployeeById(Integer id);
+    EmployeeVo findEmployeeById(Integer id);
 
-    List<EmployeeEntity> selectAll();
+    List<EmployeeVo> selectAll();
 }

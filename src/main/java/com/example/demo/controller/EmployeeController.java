@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.EmployeeEntity;
+import com.example.demo.entity.EmployeeVo;
 import com.example.demo.entity.common.Result;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
@@ -31,9 +31,9 @@ public class EmployeeController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("根据id查询Employee")
     public Result<Integer> add(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.addEmployee(employeeEntity));
+            return ResultUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);
         }
@@ -52,10 +52,10 @@ public class EmployeeController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ApiOperation("更新 Employee")
-    public Result<EmployeeEntity> updateEmployee(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeEntity employeeEntity) {
+    public Result<EmployeeVo> updateEmployee(
+            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.updateEmployee(employeeEntity));
+            return ResultUtils.success(employeeService.updateEmployee(employeeVo));
         } catch (DemoException demoException) {
             return ResultUtils.error(demoException);
         }
@@ -63,7 +63,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ApiOperation("根据id查询Employee")
-    public Result<EmployeeEntity> queryById(
+    public Result<EmployeeVo> queryById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
             return ResultUtils.success(employeeService.queryEmployee(id));
@@ -74,7 +74,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
     @ApiOperation("查询Employee列表")
-    public Result<EmployeeEntity> queryAll() {
+    public Result<EmployeeVo> queryAll() {
         try {
             return ResultUtils.success(employeeService.selectAll());
         } catch (DemoException demoException) {
