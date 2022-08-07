@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.common.Result;
+import com.example.demo.entity.common.ResultVo;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IHelloService;
-import com.example.demo.utils.ResultUtils;
+import com.example.demo.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,15 +35,15 @@ public class HelloController {
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     @ApiOperation("测试 hi")
-    public Result<String> hi(
+    public ResultVo<String> hi(
             @ApiParam(name = "name", value = "姓名") @RequestParam(required = false) String name) {
 
         try {
             String hi = helloService.hi(name);
 
-            return ResultUtils.success(hi);
+            return ResultVoUtils.success(hi);
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
 
     }

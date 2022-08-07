@@ -1,6 +1,6 @@
 package com.example.demo.utils;
 
-import com.example.demo.entity.common.Result;
+import com.example.demo.entity.common.ResultVo;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -23,9 +23,9 @@ public class GsonUtils {
      * @param <T>
      * @return
      */
-    public static <T> Result<T> parseString(String json, Class<T> clazz) {
-        Type type = new ParameterizedTypeImpl(Result.class, new Class[]{clazz});
-        Result<T> result = GSON.fromJson(json, type);
-        return result;
+    public static <T> ResultVo<T> parseString(String json, Class<T> clazz) {
+        Type type = new ParameterizedTypeImpl(ResultVo.class, new Class[]{clazz});
+        ResultVo<T> resultVo = GSON.fromJson(json, type);
+        return resultVo;
     }
 }

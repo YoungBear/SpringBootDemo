@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.DivideEntity;
-import com.example.demo.entity.common.Result;
-import com.example.demo.utils.ResultUtils;
+import com.example.demo.entity.common.ResultVo;
+import com.example.demo.utils.ResultVoUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,11 +25,11 @@ public class CalculatorController {
 
     @RequestMapping(value = "divide", method = RequestMethod.POST)
     @ApiOperation(value = "除法运算")
-    public Result<String> divide(@RequestBody DivideEntity divideEntity) {
+    public ResultVo<String> divide(@RequestBody DivideEntity divideEntity) {
         int dividend = divideEntity.getDividend();
         int divisor = divideEntity.getDivisor();
         int quotients = dividend / divisor;
-        return ResultUtils.success(String.valueOf(quotients));
+        return ResultVoUtils.success(String.valueOf(quotients));
 
     }
 

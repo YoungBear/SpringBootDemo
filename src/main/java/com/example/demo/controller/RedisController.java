@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.common.Result;
-import com.example.demo.exception.DemoException;
-import com.example.demo.utils.ResultUtils;
+import com.example.demo.entity.common.ResultVo;
+import com.example.demo.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,22 +36,22 @@ public class RedisController {
 
     @RequestMapping(value = "/setString", method = RequestMethod.POST)
     @ApiOperation("setString")
-    public Result<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key,
-                                    @ApiParam(name = "value", value = "value") @RequestParam(required = true) String value) {
+    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key,
+                                      @ApiParam(name = "value", value = "value") @RequestParam(required = true) String value) {
 
         redisTemplate.opsForValue().set(key, value);
         // 设置过期时间为1小时
         redisTemplate.expire(key, 3600L, TimeUnit.SECONDS);
-        return ResultUtils.success("set successful.");
+        return ResultVoUtils.success("set successful.");
     }
 
 
     @RequestMapping(value = "/getString", method = RequestMethod.GET)
     @ApiOperation("getString")
-    public Result<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key) {
+    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key) {
         String value = redisTemplate.opsForValue().get(key);
         Long expire = redisTemplate.getExpire(key);
         LOGGER.info("value: {}, expire: {}", value, expire);
-        return ResultUtils.success("value: " + value + ", expire: " + expire);
+        return ResultVoUtils.success("value: " + value + ", expire: " + expire);
     }
 }

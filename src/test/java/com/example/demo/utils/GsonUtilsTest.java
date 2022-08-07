@@ -1,7 +1,7 @@
 package com.example.demo.utils;
 
 import com.example.demo.entity.Book;
-import com.example.demo.entity.common.Result;
+import com.example.demo.entity.common.ResultVo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,17 +50,17 @@ public class GsonUtilsTest {
                 "  }\n" +
                 "}";
 
-        Result<Map> mapResult = GsonUtils.parseString(json, Map.class);
-        Assert.assertEquals(0, mapResult.getCode().intValue());
-        Assert.assertEquals(4, mapResult.getResult().getTotal().intValue());
+        ResultVo<Map> mapResultVo = GsonUtils.parseString(json, Map.class);
+        Assert.assertEquals(0, mapResultVo.getCode().intValue());
+        Assert.assertEquals(4, mapResultVo.getResult().getTotal().intValue());
 
-        List<Map> mapList = mapResult.getResult().getData();
+        List<Map> mapList = mapResultVo.getResult().getData();
         Assert.assertEquals(4, mapList.size());
 
-        Result<Book> bookResult = GsonUtils.parseString(json, Book.class);
-        Assert.assertEquals(0, bookResult.getCode().intValue());
-        Assert.assertEquals(4, bookResult.getResult().getTotal().intValue());
-        List<Book> data = bookResult.getResult().getData();
+        ResultVo<Book> bookResultVo = GsonUtils.parseString(json, Book.class);
+        Assert.assertEquals(0, bookResultVo.getCode().intValue());
+        Assert.assertEquals(4, bookResultVo.getResult().getTotal().intValue());
+        List<Book> data = bookResultVo.getResult().getData();
 
         // 排序
         data.sort((a, b) -> a.getName().compareTo(b.getName()));

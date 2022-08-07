@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.EmployeeVo;
-import com.example.demo.entity.common.Result;
+import com.example.demo.entity.common.ResultVo;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
-import com.example.demo.utils.ResultUtils;
+import com.example.demo.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,55 +30,55 @@ public class EmployeeController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("根据id查询Employee")
-    public Result<Integer> add(
+    public ResultVo<Integer> add(
             @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.addEmployee(employeeVo));
+            return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ApiOperation("根据id删除Employee")
-    public Result<Integer> deleteById(
+    public ResultVo<Integer> deleteById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
-            return ResultUtils.success(employeeService.deleteEmployee(id));
+            return ResultVoUtils.success(employeeService.deleteEmployee(id));
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ApiOperation("更新 Employee")
-    public Result<EmployeeVo> updateEmployee(
+    public ResultVo<EmployeeVo> updateEmployee(
             @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
         try {
-            return ResultUtils.success(employeeService.updateEmployee(employeeVo));
+            return ResultVoUtils.success(employeeService.updateEmployee(employeeVo));
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
     }
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ApiOperation("根据id查询Employee")
-    public Result<EmployeeVo> queryById(
+    public ResultVo<EmployeeVo> queryById(
             @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
         try {
-            return ResultUtils.success(employeeService.queryEmployee(id));
+            return ResultVoUtils.success(employeeService.queryEmployee(id));
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
     @ApiOperation("查询Employee列表")
-    public Result<EmployeeVo> queryAll() {
+    public ResultVo<EmployeeVo> queryAll() {
         try {
-            return ResultUtils.success(employeeService.selectAll());
+            return ResultVoUtils.success(employeeService.selectAll());
         } catch (DemoException demoException) {
-            return ResultUtils.error(demoException);
+            return ResultVoUtils.error(demoException);
         }
     }
 }

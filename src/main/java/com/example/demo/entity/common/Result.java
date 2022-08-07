@@ -1,51 +1,25 @@
 package com.example.demo.entity.common;
 
+import lombok.Data;
+
+import java.util.List;
+
 /**
  * @author youngbear
  * @email youngbear@aliyun.com
- * @date 2019-04-30 21:38
+ * @date 2019-04-30 22:51
  * @blog https://blog.csdn.net/next_second
  * @github https://github.com/YoungBear
- * @description 统一返回json格式
+ * @description 返回具体格式
  */
+@Data
 public class Result<T> {
-
     /**
-     * 错误码
+     * 数据总数
      */
-    private Integer code;
-
+    private Integer total;
     /**
-     * 提示信息
+     * 当前页数据
      */
-    private String msg;
-
-    /**
-     * 数据
-     */
-    private ResultBean<T> result;
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public ResultBean<T> getResult() {
-        return result;
-    }
-
-    public void setResult(ResultBean<T> result) {
-        this.result = result;
-    }
+    private List<T> data;
 }
