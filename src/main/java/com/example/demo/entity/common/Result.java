@@ -14,6 +14,10 @@ import java.util.List;
  */
 @Data
 public class Result<T> {
+    public static final Integer SUCCESS_CODE = 0;
+
+    public static final String SUCCESS_MESSAGE = "request successful.";
+
     /**
      * 数据总数
      */

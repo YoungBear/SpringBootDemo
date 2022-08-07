@@ -27,8 +27,8 @@ public class ResultVoUtils {
      */
     public static <T> ResultVo<T> success(T data) {
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setCode(0);
-        resultVo.setMsg("request successful.");
+        resultVo.setCode(Result.SUCCESS_CODE);
+        resultVo.setMsg(Result.SUCCESS_MESSAGE);
         Result<T> result = new Result<>();
         result.setTotal(1);
         List<T> dataList = new ArrayList<>(1);
@@ -38,16 +38,36 @@ public class ResultVoUtils {
         return resultVo;
     }
 
-    public static <T> ResultVo<T> success(List<T> dataList){
+    public static <T> ResultVo<T> success(List<T> dataList) {
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setCode(0);
-        resultVo.setMsg("request successful.");
+        resultVo.setCode(Result.SUCCESS_CODE);
+        resultVo.setMsg(Result.SUCCESS_MESSAGE);
         Result<T> result = new Result<>();
         result.setTotal(dataList.size());
         result.setData(dataList);
         resultVo.setResult(result);
         return resultVo;
     }
+
+    /**
+     * 指定total，返回数据，用于分页场景
+     *
+     * @param total    总数量
+     * @param dataList 当前数据
+     * @param <T>      泛型参数
+     * @return resultVo
+     */
+    public static <T> ResultVo<T> success(int total, List<T> dataList) {
+        ResultVo<T> resultVo = new ResultVo<>();
+        resultVo.setCode(Result.SUCCESS_CODE);
+        resultVo.setMsg(Result.SUCCESS_MESSAGE);
+        Result<T> result = new Result<>();
+        result.setTotal(total);
+        result.setData(dataList);
+        resultVo.setResult(result);
+        return resultVo;
+    }
+
     /**
      * 异常返回
      *
@@ -64,6 +84,7 @@ public class ResultVoUtils {
 
     /**
      * 异常返回
+     *
      * @param errorEnum
      * @param <T>
      * @return
