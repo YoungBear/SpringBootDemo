@@ -42,6 +42,9 @@ public class ResultVoUtils {
         ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setCode(Result.SUCCESS_CODE);
         resultVo.setMsg(Result.SUCCESS_MESSAGE);
+        if (dataList == null) {
+            return resultVo;
+        }
         Result<T> result = new Result<>();
         result.setTotal(dataList.size());
         result.setData(dataList);
