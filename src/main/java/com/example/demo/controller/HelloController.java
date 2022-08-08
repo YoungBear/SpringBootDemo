@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,8 +55,7 @@ public class HelloController {
     public ResultVo<Void> requestGet() {
         String url = "http://localhost:8888/employee/query/2";
         ResultVo<EmployeeVo> resultVo = restTemplateUtils.get(url,
-                new ParameterizedTypeReference<ResultVo<EmployeeVo>>() {
-                });
+                new RestTemplateUtils.ObjectParameterizedTypeReference<>());
         LOGGER.info("code: {}", resultVo.getCode());
         return ResultVoUtils.success(null);
     }
@@ -71,8 +69,7 @@ public class HelloController {
         String url = "http://localhost:8888/v1/book/one-book";
         ResultVo<Book> resultVo = restTemplateUtils.post(url,
                 book,
-                new ParameterizedTypeReference<ResultVo<Book>>() {
-                });
+                new RestTemplateUtils.ObjectParameterizedTypeReference<>());
         LOGGER.info("code: {}", resultVo.getCode());
         return ResultVoUtils.success(null);
     }

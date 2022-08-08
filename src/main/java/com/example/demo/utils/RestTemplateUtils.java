@@ -25,18 +25,20 @@ public class RestTemplateUtils {
     @Resource
     private RestTemplate restTemplate;
 
-    public <T> ResultVo<T> get(String url, ParameterizedTypeReference<ResultVo<T>> responseType) {
+    public <T> ResultVo<T> get(String url, ObjectParameterizedTypeReference<T> responseType) {
         return http(url, HttpMethod.GET, null, responseType);
     }
 
-    public <T> ResultVo<T> post(String url, Object request, ParameterizedTypeReference<ResultVo<T>> responseType) {
+    public <T> ResultVo<T> post(String url, Object request, ObjectParameterizedTypeReference<T> responseType) {
         return http(url, HttpMethod.POST, request, responseType);
     }
 
-    public <T> ResultVo<T> http(String url, HttpMethod httpMethod, Object request, ParameterizedTypeReference<ResultVo<T>> responseType) {
+    public <T> ResultVo<T> http(String url, HttpMethod httpMethod, Object request, ObjectParameterizedTypeReference<T> responseType) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestData = new HttpEntity<>(request, httpHeaders);
         return restTemplate.exchange(url, httpMethod, requestData, responseType).getBody();
     }
+
+    public static class ObjectParameterizedTypeReference <T> extends ParameterizedTypeReference<ResultVo<T>> {}
 }
