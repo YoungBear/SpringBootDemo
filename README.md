@@ -725,8 +725,8 @@ public class DemoException extends RuntimeException {
 ```java
 package com.example.demo.utils;
 
-import com.example.demo.entity.common.ResultVo;
 import com.example.demo.entity.common.Result;
+import com.example.demo.entity.common.ResultVo;
 import com.example.demo.enums.ErrorEnum;
 import com.example.demo.exception.DemoException;
 
@@ -741,7 +741,7 @@ import java.util.List;
  * @github https://github.com/YoungBear
  * @description
  */
-public class ResultUtils {
+public class ResultVoUtils {
 
     /**
      * 成功返回
@@ -752,25 +752,47 @@ public class ResultUtils {
      */
     public static <T> ResultVo<T> success(T data) {
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setCode(0);
-        resultVo.setMsg("request successful.");
+        resultVo.setCode(Result.SUCCESS_CODE);
+        resultVo.setMsg(Result.SUCCESS_MESSAGE);
         Result<T> result = new Result<>();
-        result.setTotal(1);
-        List<T> dataList = new ArrayList<>(1);
-        dataList.add(data);
-        result.setData(dataList);
+        if (data != null) {
+            List<T> dataList = new ArrayList<>(1);
+            dataList.add(data);
+            result.setTotal(1);
+            result.setData(dataList);
+        } else {
+            result.setTotal(0);
+        }
         resultVo.setResult(result);
         return resultVo;
     }
 
     public static <T> ResultVo<T> success(List<T> dataList) {
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setCode(0);
-        resultVo.setMsg("request successful.");
+        resultVo.setCode(Result.SUCCESS_CODE);
+        resultVo.setMsg(Result.SUCCESS_MESSAGE);
         Result<T> result = new Result<>();
-        result.setTotal(dataList.size());
-        result.setData(dataList);
+        if (dataList != null && dataList.size() > 0) {
+            result.setTotal(dataList.size());
+            result.setData(dataList);
+        } else {
+            result.setTotal(0);
+        }
         resultVo.setResult(result);
+        return resultVo;
+    }
+
+    /**
+     * 指定total，返回数据，用于分页场景
+     *
+     * @param total    总数量
+     * @param dataList 当前数据
+     * @param <T>      泛型参数
+     * @return resultVo
+     */
+    public static <T> ResultVo<T> success(int total, List<T> dataList) {
+        ResultVo<T> resultVo = success(dataList);
+        resultVo.getResult().setTotal(total);
         return resultVo;
     }
 
@@ -790,6 +812,7 @@ public class ResultUtils {
 
     /**
      * 异常返回
+     *
      * @param errorEnum
      * @param <T>
      * @return
@@ -801,6 +824,7 @@ public class ResultUtils {
         return resultVo;
     }
 }
+
 ```
 
 ### 6.4 实践

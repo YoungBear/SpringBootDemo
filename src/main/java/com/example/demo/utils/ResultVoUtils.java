@@ -30,10 +30,14 @@ public class ResultVoUtils {
         resultVo.setCode(Result.SUCCESS_CODE);
         resultVo.setMsg(Result.SUCCESS_MESSAGE);
         Result<T> result = new Result<>();
-        result.setTotal(1);
-        List<T> dataList = new ArrayList<>(1);
-        dataList.add(data);
-        result.setData(dataList);
+        if (data != null) {
+            List<T> dataList = new ArrayList<>(1);
+            dataList.add(data);
+            result.setTotal(1);
+            result.setData(dataList);
+        } else {
+            result.setTotal(0);
+        }
         resultVo.setResult(result);
         return resultVo;
     }
@@ -42,12 +46,13 @@ public class ResultVoUtils {
         ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setCode(Result.SUCCESS_CODE);
         resultVo.setMsg(Result.SUCCESS_MESSAGE);
-        if (dataList == null) {
-            return resultVo;
-        }
         Result<T> result = new Result<>();
-        result.setTotal(dataList.size());
-        result.setData(dataList);
+        if (dataList != null && dataList.size() > 0) {
+            result.setTotal(dataList.size());
+            result.setData(dataList);
+        } else {
+            result.setTotal(0);
+        }
         resultVo.setResult(result);
         return resultVo;
     }
@@ -61,13 +66,8 @@ public class ResultVoUtils {
      * @return resultVo
      */
     public static <T> ResultVo<T> success(int total, List<T> dataList) {
-        ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setCode(Result.SUCCESS_CODE);
-        resultVo.setMsg(Result.SUCCESS_MESSAGE);
-        Result<T> result = new Result<>();
-        result.setTotal(total);
-        result.setData(dataList);
-        resultVo.setResult(result);
+        ResultVo<T> resultVo = success(dataList);
+        resultVo.getResult().setTotal(total);
         return resultVo;
     }
 
