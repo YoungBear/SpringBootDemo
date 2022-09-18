@@ -3,7 +3,6 @@ package com.example.demo.utils;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.common.Result;
 import com.example.demo.entity.common.ResultVo;
-import com.sun.org.apache.xerces.internal.xs.datatypes.ByteList;
 import org.junit.Assert;
 import org.junit.Test;
 
