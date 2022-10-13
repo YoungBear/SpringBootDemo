@@ -2,9 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.common.ResultVo;
 import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * @description redis基础
  */
 @RestController
-@Api("redis 测试接口")
 @RequestMapping(value = "redis", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RedisController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
@@ -35,9 +31,7 @@ public class RedisController {
     private StringRedisTemplate redisTemplate;
 
     @RequestMapping(value = "/setString", method = RequestMethod.POST)
-    @ApiOperation("setString")
-    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key,
-                                      @ApiParam(name = "value", value = "value") @RequestParam(required = true) String value) {
+    public ResultVo<String> setString(@RequestParam(required = true) String key, @RequestParam(required = true) String value) {
 
         redisTemplate.opsForValue().set(key, value);
         // 设置过期时间为1小时
@@ -47,8 +41,7 @@ public class RedisController {
 
 
     @RequestMapping(value = "/getString", method = RequestMethod.GET)
-    @ApiOperation("getString")
-    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key) {
+    public ResultVo<String> setString(@RequestParam(required = true) String key) {
         String value = redisTemplate.opsForValue().get(key);
         Long expire = redisTemplate.getExpire(key);
         LOGGER.info("value: {}, expire: {}", value, expire);

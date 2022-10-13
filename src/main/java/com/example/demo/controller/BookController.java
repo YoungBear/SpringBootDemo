@@ -6,8 +6,6 @@ import com.example.demo.entity.common.ResultVo;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IBookService;
 import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -29,7 +27,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api("Book 接口")
 public class BookController {
 
     @Autowired
@@ -39,7 +36,6 @@ public class BookController {
     private ApplicationContext applicationContext;
 
     @RequestMapping(value = "/book-list", method = RequestMethod.POST)
-    @ApiOperation("返回测试的 book 列表")
     public ResultVo<Book> bookList() {
         try {
             List<Book> books = bookService.bookList();

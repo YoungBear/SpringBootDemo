@@ -8,9 +8,6 @@ import com.example.demo.service.IHelloService;
 import com.example.demo.utils.RestTemplateUtils;
 import com.example.demo.utils.ResultVoUtils;
 import com.google.gson.Gson;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,6 @@ import javax.annotation.Resource;
  * @description
  */
 @RestController
-@Api("Hello 测试接口")
 @RequestMapping(value = "hello", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HelloController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
@@ -41,8 +37,7 @@ public class HelloController {
     private RestTemplateUtils restTemplateUtils;
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
-    @ApiOperation("测试 hi")
-    public ResultVo<String> hi(@ApiParam(name = "name", value = "姓名") @RequestParam(required = false) String name) {
+    public ResultVo<String> hi(@RequestParam(required = false) String name) {
 
         try {
             String hi = helloService.hi(name);

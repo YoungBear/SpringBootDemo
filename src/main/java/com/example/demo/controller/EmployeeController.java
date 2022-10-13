@@ -5,9 +5,6 @@ import com.example.demo.entity.common.ResultVo;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
 import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
  * @description
  */
 @RestController
-@Api("Employee 接口")
 @RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
 
@@ -29,9 +25,7 @@ public class EmployeeController {
     private IEmployeeService employeeService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ApiOperation("根据id查询Employee")
-    public ResultVo<Integer> add(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
+    public ResultVo<Integer> add(@RequestBody EmployeeVo employeeVo) {
         try {
             return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
@@ -40,9 +34,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @ApiOperation("根据id删除Employee")
-    public ResultVo<Integer> deleteById(
-            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+    public ResultVo<Integer> deleteById(@PathVariable("id") Integer id) {
         try {
             return ResultVoUtils.success(employeeService.deleteEmployee(id));
         } catch (DemoException demoException) {
@@ -51,9 +43,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ApiOperation("更新 Employee")
-    public ResultVo<EmployeeVo> updateEmployee(
-            @ApiParam(name = "employeeEntity", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
+    public ResultVo<EmployeeVo> updateEmployee(@RequestBody EmployeeVo employeeVo) {
         try {
             return ResultVoUtils.success(employeeService.updateEmployee(employeeVo));
         } catch (DemoException demoException) {
@@ -62,9 +52,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
-    @ApiOperation("根据id查询Employee")
-    public ResultVo<EmployeeVo> queryById(
-            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+    public ResultVo<EmployeeVo> queryById(@PathVariable("id") Integer id) {
         try {
             return ResultVoUtils.success(employeeService.queryEmployee(id));
         } catch (DemoException demoException) {
@@ -73,7 +61,6 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @ApiOperation("查询Employee列表")
     public ResultVo<EmployeeVo> queryAll() {
         try {
             return ResultVoUtils.success(employeeService.selectAll());
