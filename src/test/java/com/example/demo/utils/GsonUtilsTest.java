@@ -2,8 +2,8 @@ package com.example.demo.utils;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.common.ResultVo;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
@@ -51,25 +51,25 @@ public class GsonUtilsTest {
                 "}";
 
         ResultVo<Map> mapResultVo = GsonUtils.parseString(json, Map.class);
-        Assert.assertEquals(0, mapResultVo.getCode().intValue());
-        Assert.assertEquals(4, mapResultVo.getResult().getTotal().intValue());
+        Assertions.assertEquals(0, mapResultVo.getCode().intValue());
+        Assertions.assertEquals(4, mapResultVo.getResult().getTotal().intValue());
 
         List<Map> mapList = mapResultVo.getResult().getData();
-        Assert.assertEquals(4, mapList.size());
+        Assertions.assertEquals(4, mapList.size());
 
         ResultVo<Book> bookResultVo = GsonUtils.parseString(json, Book.class);
-        Assert.assertEquals(0, bookResultVo.getCode().intValue());
-        Assert.assertEquals(4, bookResultVo.getResult().getTotal().intValue());
+        Assertions.assertEquals(0, bookResultVo.getCode().intValue());
+        Assertions.assertEquals(4, bookResultVo.getResult().getTotal().intValue());
         List<Book> data = bookResultVo.getResult().getData();
 
         // 排序
         data.sort((a, b) -> a.getName().compareTo(b.getName()));
 
-        Assert.assertEquals("Effective Java中文版", data.get(0).getName());
-        Assert.assertEquals("Joshua Bloch", data.get(0).getAuthor());
-        Assert.assertEquals("机械工业出版社", data.get(0).getPublisher());
-        Assert.assertEquals("吴军", data.get(1).getAuthor());
-        Assert.assertEquals("人民邮电出版社", data.get(2).getPublisher());
-        Assert.assertEquals("重构 改善既有代码的设计", data.get(3).getName());
+        Assertions.assertEquals("Effective Java中文版", data.get(0).getName());
+        Assertions.assertEquals("Joshua Bloch", data.get(0).getAuthor());
+        Assertions.assertEquals("机械工业出版社", data.get(0).getPublisher());
+        Assertions.assertEquals("吴军", data.get(1).getAuthor());
+        Assertions.assertEquals("人民邮电出版社", data.get(2).getPublisher());
+        Assertions.assertEquals("重构 改善既有代码的设计", data.get(3).getName());
     }
 }
