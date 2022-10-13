@@ -7,12 +7,14 @@ import com.example.demo.exception.DemoException;
 import com.example.demo.service.IHelloService;
 import com.example.demo.utils.RestTemplateUtils;
 import com.example.demo.utils.ResultVoUtils;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +57,10 @@ public class HelloController {
     public ResultVo<Void> requestGet() {
         String url = "http://localhost:8888/employee/query/2";
         ResultVo<EmployeeVo> resultVo = restTemplateUtils.get(url,
-                new RestTemplateUtils.ObjectParameterizedTypeReference<>());
+                new EmployeeVoParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
+        EmployeeVo employeeVo = resultVo.getResult().getData().get(0);
+        LOGGER.info("employeeVo: {}", new Gson().toJson(employeeVo));
         return ResultVoUtils.success(null);
     }
 
@@ -68,11 +72,22 @@ public class HelloController {
         book.setName("数学之美");
         String url = "http://localhost:8888/v1/book/one-book";
         ResultVo<Book> resultVo = restTemplateUtils.post(url,
-                book,
-                new RestTemplateUtils.ObjectParameterizedTypeReference<>());
+                book, new BookParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
+        Book responseBook = resultVo.getResult().getData().get(0);
+        LOGGER.info("employeeVo: {}", new Gson().toJson(responseBook));
         return ResultVoUtils.success(null);
     }
+
+    private static class EmployeeVoParameterizedTypeReference extends ParameterizedTypeReference<ResultVo<EmployeeVo>> {
+    }
+
+    ;
+
+    private static class BookParameterizedTypeReference extends ParameterizedTypeReference<ResultVo<Book>> {
+    }
+
+    ;
 
 
 }
