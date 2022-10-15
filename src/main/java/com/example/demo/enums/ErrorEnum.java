@@ -11,12 +11,13 @@ package com.example.demo.enums;
 public enum ErrorEnum {
 
     UNKNOWN_ERROR(-1, "unknown error."),
+    HTTP_REQUEST_ERROR(9999, "http request error"),
     BOOK_NAME_NULL_ERROR(10001, "book name is null."),
     HELLO_NAME_NULL_ERROR(20001, "hi name is null.");
 
 
-    Integer errorCode;
-    String errorMessage;
+    final Integer errorCode;
+    final String errorMessage;
 
     ErrorEnum(Integer errorCode, String errorMessage) {
         this.errorCode = errorCode;

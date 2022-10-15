@@ -18,6 +18,12 @@ public class DemoException extends RuntimeException {
         this.errorEnum = errorEnum;
     }
 
+    public DemoException(Throwable cause, ErrorEnum errorEnum) {
+        super(cause);
+        this.errorEnum = errorEnum;
+    }
+
+
     public ErrorEnum getErrorEnum() {
         return errorEnum;
     }
