@@ -26,14 +26,14 @@ public class GlobalExceptionHandler {
     // 未知异常
     @ExceptionHandler(value = Exception.class)
     public ResultVo<String> defaultErrorHandler(Exception e) {
-        LOGGER.error(e.getMessage(),e);
+        LOGGER.error(e.getMessage(), e);
         return ResultVoUtils.error(ErrorEnum.UNKNOWN_ERROR);
     }
 
     // 自定义的异常
     @ExceptionHandler(value = DemoException.class)
     public ResultVo<String> errorHandler(DemoException e) {
-        LOGGER.error(e.getMessage(),e);
+        LOGGER.error(e.getMessage(), e);
         return ResultVoUtils.error(e.getErrorEnum());
     }
 }

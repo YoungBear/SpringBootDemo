@@ -2,10 +2,10 @@
 <configuration>
 
     <!-- springboot 提供的显示颜色的工具 -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
 
-    <property name="LOG_HOME" value="/Users/youngbear/logs" />
-    <property name="PROJECT_NAME" value="springbootdemo" />
+    <property name="LOG_HOME" value="/Users/youngbear/logs"/>
+    <property name="PROJECT_NAME" value="springbootdemo"/>
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -14,7 +14,7 @@
         </encoder>
     </appender>
     <!-- 输出到文件 -->
-    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- file 标签用来表示当前日志的文件，如果没有改标签的话，则使用FileNamePattern中的配置 -->
         <file>${LOG_HOME}/${PROJECT_NAME}/springbootdemo.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -34,11 +34,11 @@
     </appender>
 
     <!-- mybatis 显示日志配置 -->
-    <logger name="com.example.demo.dao" level="DEBUG" />
+    <logger name="com.example.demo.dao" level="DEBUG"/>
 
     <!-- 日志输出级别 -->
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

@@ -16,12 +16,14 @@ public interface IBookService {
 
     /**
      * 返回测试列表
+     *
      * @return
      */
     List<Book> bookList();
 
     /**
      * 构造一个书的对象
+     *
      * @param name
      * @param author
      * @param publisher

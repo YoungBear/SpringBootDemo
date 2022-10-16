@@ -12,7 +12,7 @@
 
     <insert id="add" parameterType="com.example.demo.entity.EmployeeVo">
         INSERT INTO EMPLOYEE (ID, NAME, HIRE_DATE, SALARY, DEPT_NO)
-            VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
+        VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
     </insert>
 
     <delete id="delete" parameterType="INTEGER">
@@ -21,13 +21,13 @@
 
     <update id="update" parameterType="com.example.demo.entity.EmployeeVo">
         UPDATE EMPLOYEE SET
-            NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
+        NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
         WHERE ID = #{id}
     </update>
 
     <select id="findEmployeeById" resultMap="EmployeeResultMap">
         SELECT ID, NAME, HIRE_DATE, SALARY, DEPT_NO FROM EMPLOYEE
-            WHERE ID = #{id}
+        WHERE ID = #{id}
     </select>
 
     <select id="selectAll" resultMap="EmployeeResultMap">

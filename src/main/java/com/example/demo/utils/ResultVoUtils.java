@@ -22,7 +22,7 @@ public class ResultVoUtils {
      * 成功返回
      *
      * @param data 返回数据
-     * @param <T>  数据类型
+     * @param <T> 数据类型
      * @return 统一的返回值
      */
     public static <T> ResultVo<T> success(T data) {
@@ -60,9 +60,9 @@ public class ResultVoUtils {
     /**
      * 指定total，返回数据，用于分页场景
      *
-     * @param total    总数量
+     * @param total 总数量
      * @param dataList 当前数据
-     * @param <T>      泛型参数
+     * @param <T> 泛型参数
      * @return resultVo
      */
     public static <T> ResultVo<T> success(int total, List<T> dataList) {
