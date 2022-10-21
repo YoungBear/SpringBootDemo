@@ -12,6 +12,7 @@ import com.example.demo.enums.ErrorEnum;
  */
 public class DemoException extends RuntimeException {
 
+    private static final long serialVersionUID = 1905532578117424643L;
     private final ErrorEnum errorEnum;
 
     public DemoException(ErrorEnum errorEnum) {

@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEvent;
  * @description
  */
 public class BookEvent extends ApplicationEvent {
+    private static final long serialVersionUID = -2137894125601150872L;
     private Book book;
 
     public BookEvent(Object source) {

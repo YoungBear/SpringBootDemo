@@ -436,9 +436,9 @@ Hello World!
 
 
 
-## 6. 返回统一的json格式
+## 5. 返回统一的json格式
 
-### 6.1 创建返回对象泛型类
+### 5.1 创建返回对象泛型类
 
 统一对象类： `ResultVo.java`
 
@@ -487,7 +487,7 @@ public class Result<T> {
 
 ```
 
-### 6.2 创建异常类
+### 5.2 创建异常类
 
 错误定义枚举：`ErrorEnum.java`
 
@@ -564,7 +564,7 @@ public class DemoException extends RuntimeException {
 
 ```
 
-### 6.3 创建工具类
+### 5.3 创建工具类
 
 创建工具类 `ResultUtils.java` ，进行封装返回成功信息，异常信息。
 
@@ -673,7 +673,7 @@ public class ResultVoUtils {
 
 ```
 
-### 6.4 实践
+### 5.4 实践
 
 以 `BookController` 为例，进行正常返回对象，正常返回数组，异常返回。
 
@@ -939,7 +939,7 @@ curl --location --request POST 'http://localhost:8888/v1/book/one-book' \
 
 用postman请求也可以实现同样的效果。具体可参考源代码。
 
-## 7. 处理全局异常
+## 6. 处理全局异常
 
 使用注解 `@RestControllerAdvice`，处理全局异常，在请求发生异常时，会通过该类进行处理：
 
@@ -988,185 +988,7 @@ public class GlobalExceptionHandler {
 
 
 
-## 8. 解析通用数据格式的json串
-
-一般我们使用通用的json时，微服务之间的调用，会涉及到json的解析，这时候需要传入一个Class对象，既可以解析出来整个的对象：
-
-```java
-    /**
-     * Gson 解析通用数据格式
-     * @param json
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> Result<T> parseString(String json, Class<T> clazz) {
-        //...
-    }
-```
-
-具体实现方案：
-
-### 8.1 使用Gson依赖：
-
-```xml
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.8.5</version>
-</dependency>
-```
-
-### 8.2 Java 代码
-
-```java
-package com.example.demo.utils;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
-/**
- * @author youngbear
- * @email youngbear@aliyun.com
- * @date 2019-05-14 22:47
- * @blog https://blog.csdn.net/next_second
- * @github https://github.com/YoungBear
- * @description
- */
-public class ParameterizedTypeImpl implements ParameterizedType {
-    private final Class raw;
-    private final Type[] args;
-
-    public ParameterizedTypeImpl(Class raw, Type[] args) {
-        this.raw = raw;
-        this.args = args != null ? args : new Type[0];
-    }
-
-    @Override
-    public Type[] getActualTypeArguments() {
-        return args;
-    }
-
-    @Override
-    public Type getRawType() {
-        return raw;
-    }
-
-    @Override
-    public Type getOwnerType() {
-        return null;
-    }
-}
-```
-
-```java
-package com.example.demo.utils;
-
-import com.example.demo.entity.common.ResultVo;
-import com.google.gson.Gson;
-
-import java.lang.reflect.Type;
-
-/**
- * @author youngbear
- * @email youngbear@aliyun.com
- * @date 2019-05-14 22:44
- * @blog https://blog.csdn.net/next_second
- * @github https://github.com/YoungBear
- * @description Gson 工具类
- */
-public class GsonUtils {
-    private static final Gson GSON = new Gson();
-
-    /**
-     * Gson 解析通用数据格式
-     * @param json
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> ResultVo<T> parseString(String json, Class<T> clazz) {
-        Type type = new ParameterizedTypeImpl(ResultVo.class, new Class[]{clazz});
-        ResultVo<T> resultVo = GSON.fromJson(json, type);
-        return resultVo;
-    }
-}
-```
-
-### 8.3 单元测试
-
-```java
-package com.example.demo.utils;
-
-import com.example.demo.entity.Book;
-import com.example.demo.entity.common.ResultVo;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.List;
-
-/**
- * @author youngbear
- * @email youngbear@aliyun.com
- * @date 2019-05-14 22:54
- * @blog https://blog.csdn.net/next_second
- * @github https://github.com/YoungBear
- * @description Gson 工具类测试
- */
-public class GsonUtilsTest {
-
-    @Test
-    public void parseStringTest() {
-        String json = "{\n" +
-                "  \"code\": 0,\n" +
-                "  \"msg\": \"request successful.\",\n" +
-                "  \"resultVo\": {\n" +
-                "    \"total\": 4,\n" +
-                "    \"data\": [\n" +
-                "      {\n" +
-                "        \"name\": \"数学之美\",\n" +
-                "        \"publisher\": \"人民邮电出版社\",\n" +
-                "        \"author\": \"吴军\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"name\": \"重构 改善既有代码的设计\",\n" +
-                "        \"publisher\": \"人民邮电出版社\",\n" +
-                "        \"author\": \"Martin Fowler\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"name\": \"机器学习实战\",\n" +
-                "        \"publisher\": \"人民邮电出版社\",\n" +
-                "        \"author\": \"Peter Harrington\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"name\": \"Effective Java中文版\",\n" +
-                "        \"publisher\": \"机械工业出版社\",\n" +
-                "        \"author\": \"Joshua Bloch\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "}";
-        ResultVo<Book> bookResultVo = GsonUtils.parseString(json, Book.class);
-        Assert.assertEquals(0, bookResultVo.getCode().intValue());
-        Assert.assertEquals(4, bookResultVo.getResult().getTotal().intValue());
-        List<Book> data = bookResultVo.getResult().getData();
-
-        // 排序
-        data.sort((a, b) -> a.getName().compareTo(b.getName()));
-
-        Assert.assertEquals("Effective Java中文版", data.get(0).getName());
-        Assert.assertEquals("Joshua Bloch", data.get(0).getAuthor());
-        Assert.assertEquals("机械工业出版社", data.get(0).getPublisher());
-        Assert.assertEquals("吴军", data.get(1).getAuthor());
-        Assert.assertEquals("人民邮电出版社", data.get(2).getPublisher());
-        Assert.assertEquals("重构 改善既有代码的设计", data.get(3).getName());
-    }
-}
-```
-
-
-
-## 9. 多环境配置
+## 7. 多环境配置
 
 在 `src/main/resources` 下新建文件:
 
@@ -1193,9 +1015,9 @@ dev,test,prod分别表示开发，测试，生产环境。在实际的工作中�
 
 
 
-## 10. 集成数据库
+## 8. 集成数据库
 
-### 10.1 添加依赖
+### 8.1 添加依赖
 
 ```xml
         <dependency>
@@ -1213,7 +1035,7 @@ dev,test,prod分别表示开发，测试，生产环境。在实际的工作中�
 
 
 
-### 10.2 添加数据库配置
+### 8.2 添加数据库配置
 
 ```yaml
 spring:
@@ -1227,7 +1049,7 @@ mybatis:
 
 
 
-### 10.3 实现java代码
+### 8.3 实现java代码
 
 首先创建数据库相关信息：
 
@@ -1251,7 +1073,7 @@ INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小张', '2010-
 
 ```
 
-#### 10.3.1 实体类
+#### 8.3.1 实体类
 
 ```java
 package com.example.demo.entity;
@@ -1266,7 +1088,7 @@ public class Employee {
 }
 ```
 
-#### 10.3.2 DAO代码
+#### 8.3.2 DAO代码
 
 java 代码：
 
@@ -1338,7 +1160,7 @@ public interface IEmployeeDao {
 
 其中，名称为EmployeeResultMap的resultMap，作用是将数据库表的字段和java实体类的属性映射起来，在下边的查询语句中，可以直接使用resultMap="xxx"，即可实现返回结果为实体类的类型。
 
-#### 10.3.2 接口相关代码
+#### 8.3.2 接口相关代码
 
 IService:
 
@@ -1542,7 +1364,7 @@ public class EmployeeController {
 }
 ```
 
-### 10.4 运行结果
+### 8.4 运行结果
 
 get请求：`http://localhost:8888/employee/query/3`
 
@@ -1552,7 +1374,7 @@ get请求：`http://localhost:8888/employee/query/3`
 
 
 
-### 10.5 日志配置显示sql日志
+### 8.5 日志配置显示sql日志
 
 在 `logback-spring.xml` 中配置：
 
@@ -1573,7 +1395,7 @@ get请求：`http://localhost:8888/employee/query/3`
 
 
 
-## 11. 集成redis
+## 9. 集成redis
 
 ### redis 基础
 
@@ -1748,7 +1570,7 @@ curl -X GET "http://localhost:8888/redis/getString?key=name1" -H "accept: applic
 
 
 
-## 12. RestTemplate工具类
+## 10. RestTemplate工具类
 
 
 

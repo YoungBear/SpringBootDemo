@@ -7,7 +7,6 @@ import com.example.demo.exception.DemoException;
 import com.example.demo.service.IHelloService;
 import com.example.demo.utils.RestTemplateUtils;
 import com.example.demo.utils.ResultVoUtils;
-import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,6 @@ public class HelloController {
                 new EmployeeVoParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
         EmployeeVo employeeVo = resultVo.getResult().getData().get(0);
-        LOGGER.info("employeeVo: {}", new Gson().toJson(employeeVo));
         return ResultVoUtils.success(null);
     }
 
@@ -74,7 +72,6 @@ public class HelloController {
                 book, new BookParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
         Book responseBook = resultVo.getResult().getData().get(0);
-        LOGGER.info("employeeVo: {}", new Gson().toJson(responseBook));
         return ResultVoUtils.success(null);
     }
 
