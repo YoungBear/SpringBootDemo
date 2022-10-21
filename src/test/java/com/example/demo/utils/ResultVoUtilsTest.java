@@ -1,8 +1,9 @@
 package com.example.demo.utils;
 
 import com.example.demo.entity.Book;
-import com.example.demo.entity.common.Result;
-import com.example.demo.entity.common.ResultVo;
+import com.example.demo.infrastructure.entity.Result;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

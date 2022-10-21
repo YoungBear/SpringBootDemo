@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.common.Result;
-import com.example.demo.service.IEmployeeService;
+import com.example.demo.infrastructure.entity.Result;
+import com.example.demo.application.service.IEmployeeService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

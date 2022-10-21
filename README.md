@@ -534,7 +534,7 @@ public enum ErrorEnum {
 ```java
 package com.example.demo.exception;
 
-import com.example.demo.enums.ErrorEnum;
+import com.example.demo.infrastructure.enums.ErrorEnum;
 
 /**
  * @author youngbear
@@ -571,10 +571,10 @@ public class DemoException extends RuntimeException {
 ```java
 package com.example.demo.utils;
 
-import com.example.demo.entity.common.Result;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
+import com.example.demo.infrastructure.entity.Result;
+com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -681,10 +681,10 @@ public class ResultVoUtils {
 package com.example.demo.controller;
 
 import com.example.demo.entity.Book;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IBookService;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IBookService;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -781,14 +781,14 @@ public interface IBookService {
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Book;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IBookService;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IBookService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.enums.ErrorEnum.BOOK_NAME_NULL_ERROR;
+import static com.example.demo.infrastructure.enums.ErrorEnum.BOOK_NAME_NULL_ERROR;
 
 /**
  * @author youngbear
@@ -946,10 +946,10 @@ curl --location --request POST 'http://localhost:8888/v1/book/one-book' \
 ```java
 package com.example.demo.configuration;
 
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -1121,7 +1121,7 @@ public interface IEmployeeDao {
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.IEmployeeDao">
+<mapper namespace="com.example.demo.domain.repository.dao.IEmployeeDao">
 
     <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeVo">
         <resultVo column="ID" jdbcType="INTEGER" property="id"/>
@@ -1225,9 +1225,9 @@ ServiceImpl:
 ```java
 package com.example.demo.service.impl;
 
-import com.example.demo.dao.IEmployeeDao;
+import com.example.demo.domain.repository.dao.IEmployeeDao;
 import com.example.demo.entity.EmployeeVo;
-import com.example.demo.service.IEmployeeService;
+import com.example.demo.application.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -1281,10 +1281,10 @@ Controller:
 package com.example.demo.controller;
 
 import com.example.demo.entity.EmployeeVo;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IEmployeeService;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IEmployeeService;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -1464,8 +1464,8 @@ taskkill -pid <进程号> -f -t
 ```java
 package com.example.demo.controller;
 
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -1579,8 +1579,8 @@ RestTemplateUtils工具类代码：
 ```java
 package com.example.demo.utils;
 
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -1684,20 +1684,16 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.EmployeeVo;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.utils.RestTemplateUtils;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.utils.RestTemplateUtils;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
