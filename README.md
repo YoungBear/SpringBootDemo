@@ -1395,11 +1395,15 @@ get请求：`http://localhost:8888/employee/query/3`
 
 
 
-## 9. 集成redis
+## 9. 集成Redis
 
-### redis 基础
+### Redis 基础
 
+#### 1. Redis 简介
 
+Redis 全称： REmote DIctionary Server，即远程字典服务。
+
+是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可以持久化的日志型、Key-Value型数据库。
 
 #### 2. redis安装
 
@@ -1457,9 +1461,34 @@ taskkill -pid <进程号> -f -t
 
 
 
+##### 3.2 配置文件
+
+```
+spring:
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis本地服务器地址，默认为127.0.0.1
+    host: 127.0.0.1
+    # Redis服务器端口,默认为6379.若有改动按改动后的来
+    port: 6379
+    #Redis服务器连接密码，默认为空，若有设置按设置的来
+    password:
+    jedis:
+      pool:
+        # 连接池最大连接数，若为负数则表示没有任何限制
+        max-active: 8
+        # 连接池最大阻塞等待时间，若为负数则表示没有任何限制
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 8
+```
 
 
-##### 3.2 添加测试代码
+
+
+
+##### 3.3 添加测试代码
 
 ```java
 package com.example.demo.controller;

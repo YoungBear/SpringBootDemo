@@ -41,7 +41,7 @@ public class RedisController {
 
 
     @RequestMapping(value = "/getString", method = RequestMethod.GET)
-    public ResultVo<String> setString(@RequestParam(required = true) String key) {
+    public ResultVo<String> getString(@RequestParam(required = true) String key) {
         String value = redisTemplate.opsForValue().get(key);
         Long expire = redisTemplate.getExpire(key);
         LOGGER.info("value: {}, expire: {}", value, expire);

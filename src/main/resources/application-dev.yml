@@ -5,5 +5,22 @@ spring:
     url: jdbc:mysql://localhost:3306/springbootdemo?serverTimezone=UTC
     username: bearyang
     password: 123456
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis本地服务器地址，默认为127.0.0.1注意要开启redis服务，即那个redis-server.exe
+    host: 127.0.0.1
+    # Redis服务器端口,默认为6379.若有改动按改动后的来
+    port: 6379
+    #Redis服务器连接密码，默认为空，若有设置按设置的来
+    password:
+    jedis:
+      pool:
+        # 连接池最大连接数，若为负数则表示没有任何限制
+        max-active: 8
+        # 连接池最大阻塞等待时间，若为负数则表示没有任何限制
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 8
 mybatis:
   mapper-locations: classpath:mapper/*.xml
