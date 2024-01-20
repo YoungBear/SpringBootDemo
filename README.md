@@ -706,14 +706,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@Api("Book 接口")
 public class BookController {
 
     @Autowired
     private IBookService bookService;
 
     @RequestMapping(value = "/book-list", method = RequestMethod.POST)
-    @ApiOperation("返回测试的 book 列表")
     public ResultVo<Book> bookList() {
         try {
             List<Book> books = bookService.bookList();
@@ -1286,12 +1284,13 @@ import com.example.demo.entity.common.ResultVo;
 import com.example.demo.exception.DemoException;
 import com.example.demo.service.IEmployeeService;
 import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author youngbear
@@ -1302,17 +1301,14 @@ import org.springframework.web.bind.annotation.*;
  * @description
  */
 @RestController
-@Api("Employee 接口")
-@RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
 
     @Autowired
     private IEmployeeService employeeService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ApiOperation("根据id查询Employee")
-    public ResultVo<Integer> add(
-            @ApiParam(name = "employeeVo", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
+    public ResultVo<Integer> add(@RequestBody EmployeeVo employeeVo) {
         try {
             return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
@@ -1321,9 +1317,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @ApiOperation("根据id删除Employee")
-    public ResultVo<Integer> deleteById(
-            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+    public ResultVo<Integer> deleteById(@PathVariable("id") Integer id) {
         try {
             return ResultVoUtils.success(employeeService.deleteEmployee(id));
         } catch (DemoException demoException) {
@@ -1332,9 +1326,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ApiOperation("更新 Employee")
-    public ResultVo<EmployeeVo> updateEmployee(
-            @ApiParam(name = "employeeVo", value = "employee 信息") @RequestBody EmployeeVo employeeVo) {
+    public ResultVo<EmployeeVo> updateEmployee(@RequestBody EmployeeVo employeeVo) {
         try {
             return ResultVoUtils.success(employeeService.updateEmployee(employeeVo));
         } catch (DemoException demoException) {
@@ -1343,9 +1335,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
-    @ApiOperation("根据id查询Employee")
-    public ResultVo<EmployeeVo> queryById(
-            @ApiParam(name = "id", value = "employee id") @PathVariable("id") Integer id) {
+    public ResultVo<EmployeeVo> queryById(@PathVariable("id") Integer id) {
         try {
             return ResultVoUtils.success(employeeService.queryEmployee(id));
         } catch (DemoException demoException) {
@@ -1354,7 +1344,6 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @ApiOperation("根据id查询Employee")
     public ResultVo<EmployeeVo> queryAll() {
         try {
             return ResultVoUtils.success(employeeService.selectAll());
@@ -1363,6 +1352,7 @@ public class EmployeeController {
         }
     }
 }
+
 ```
 
 ### 8.4 运行结果
@@ -1514,9 +1504,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.common.ResultVo;
 import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1538,7 +1525,6 @@ import java.util.concurrent.TimeUnit;
  * @description redis基础
  */
 @RestController
-@Api("redis 测试接口")
 @RequestMapping(value = "redis", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RedisController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
@@ -1547,9 +1533,7 @@ public class RedisController {
     private StringRedisTemplate redisTemplate;
 
     @RequestMapping(value = "/setString", method = RequestMethod.POST)
-    @ApiOperation("setString")
-    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key,
-                                      @ApiParam(name = "value", value = "value") @RequestParam(required = true) String value) {
+    public ResultVo<String> setString(@RequestParam(required = true) String key, @RequestParam(required = true) String value) {
 
         redisTemplate.opsForValue().set(key, value);
         // 设置过期时间为1小时
@@ -1559,8 +1543,7 @@ public class RedisController {
 
 
     @RequestMapping(value = "/getString", method = RequestMethod.GET)
-    @ApiOperation("getString")
-    public ResultVo<String> setString(@ApiParam(name = "key", value = "key") @RequestParam(required = true) String key) {
+    public ResultVo<String> getString(@RequestParam(required = true) String key) {
         String value = redisTemplate.opsForValue().get(key);
         Long expire = redisTemplate.getExpire(key);
         LOGGER.info("value: {}, expire: {}", value, expire);
