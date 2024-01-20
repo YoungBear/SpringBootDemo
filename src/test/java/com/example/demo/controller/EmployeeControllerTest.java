@@ -2,15 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.common.Result;
 import com.example.demo.service.IEmployeeService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -26,9 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @date 2022-09-22 23:17
  * @blog <a href="https://blog.csdn.net/next_second">...</a>
  * @github <a href="https://github.com/YoungBear">...</a>
- * @description
+ * @description test for @link EmployeeController
  */
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(EmployeeController.class)
 @DisplayName("EmployeeController Test")
 public class EmployeeControllerTest {
@@ -38,12 +34,13 @@ public class EmployeeControllerTest {
     @MockBean
     private IEmployeeService employeeService;
 
-
     @Test
-    @Disabled
     public void addTest() throws Exception {
         Mockito.when(employeeService.addEmployee(any())).thenReturn(1);
-        mockMvc.perform(MockMvcRequestBuilders.get("/employee/add").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.post("/employee/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.code").value(Result.SUCCESS_CODE))
                 .andExpect(jsonPath("$.msg").value(Result.SUCCESS_MESSAGE))
