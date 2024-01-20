@@ -2,8 +2,9 @@ package com.example.demo.entity;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author youngbear
@@ -11,18 +12,24 @@ import java.time.ZoneId;
  * @date 2019-07-21 18:18
  * @blog https://blog.csdn.net/next_second
  * @github https://github.com/YoungBear
- * @description
+ * @description 雇员实体类
  */
 @Data
 public class EmployeeVo {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Integer id;
     private String name;
-    private LocalDateTime hireDate;
+    private Long hireDate;
     private Float salary;
     private Integer deptNo;
 
-
-    public long getHireDateTimestamp() {
-        return hireDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    /**
+     * 返回格式化的日期
+     *
+     * @return 日期
+     */
+    public String getHireDateFormat() {
+        return Instant.ofEpochMilli(hireDate).atZone(ZoneId.systemDefault()).toLocalDate().format(DATE_FORMATTER);
     }
+
 }

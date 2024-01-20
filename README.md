@@ -1054,23 +1054,24 @@ mybatis:
 首先创建数据库相关信息：
 
 ```mysql
--- create database
-CREATE DATABASE springbootdemo;
-
+DROP TABLE IF EXISTS EMPLOYEE;
 -- create table
 CREATE TABLE EMPLOYEE (
     ID INT UNSIGNED AUTO_INCREMENT,
     NAME VARCHAR(100) NOT NULL,
-    HIRE_DATE DATE,
+    HIRE_DATE BIGINT,
     SALARY DECIMAL(10,2),
     DEPT_NO INT(2),
     PRIMARY KEY (ID)
 );
-
--- insert data
-INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小杨', '2010-09-14', 8000.0, '06');
-INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小张', '2010-09-15', 9000.0, '05');
-
+-- 2010-09-14 00:00:00
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小杨', 1284393600000, 8000.0, '06');
+-- 2010-09-15 00:00:00
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小张', 1284480000000, 9000.0, '05');
+-- 2014-09-01 00:00:00
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小孙', 1409500800000, 12000.0, '05');
+-- 2014-09-02 00:00:00
+INSERT INTO EMPLOYEE (NAME, HIRE_DATE, SALARY, DEPT_NO) VALUES ('小雷', 1409587200000, 12000.0, '05');
 ```
 
 #### 8.3.1 实体类
@@ -1126,7 +1127,7 @@ public interface IEmployeeDao {
     <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeVo">
         <resultVo column="ID" jdbcType="INTEGER" property="id"/>
         <resultVo column="NAME" jdbcType="VARCHAR" property="name"/>
-        <resultVo column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>
+        <resultVo column="HIRE_DATE" jdbcType="BIGINT" property="hireDate"/>
         <resultVo column="SALARY" jdbcType="DECIMAL" property="salary"/>
         <resultVo column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
@@ -1370,7 +1371,25 @@ get请求：`http://localhost:8888/employee/query/3`
 
 通过postman请求结果：
 
-![](./pictures/employee-query-by-id.png)
+```json
+{
+    "code": 0,
+    "msg": "request successful.",
+    "result": {
+        "total": 1,
+        "data": [
+            {
+                "id": 3,
+                "name": "小孙",
+                "hireDate": 1409500800000,
+                "salary": 12000.0,
+                "deptNo": 5,
+                "hireDateFormat": "2014-09-01"
+            }
+        ]
+    }
+}
+```
 
 
 

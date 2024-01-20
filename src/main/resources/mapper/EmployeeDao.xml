@@ -5,7 +5,7 @@
     <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeVo">
         <result column="ID" jdbcType="INTEGER" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
-        <result column="HIRE_DATE" jdbcType="DATE" property="hireDate"/>
+        <result column="HIRE_DATE" jdbcType="BIGINT" property="hireDate"/>
         <result column="SALARY" jdbcType="DECIMAL" property="salary"/>
         <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
