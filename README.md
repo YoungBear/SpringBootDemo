@@ -1359,7 +1359,7 @@ public class EmployeeController {
 
 get请求：`http://localhost:8888/employee/query/3`
 
-通过postman请求结果：
+返回结果：
 
 ```json
 {
