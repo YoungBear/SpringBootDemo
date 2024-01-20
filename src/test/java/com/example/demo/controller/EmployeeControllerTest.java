@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.common.Result;
 import com.example.demo.service.IEmployeeService;
+import com.example.demo.utils.ResourceFileReadUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,7 +40,7 @@ public class EmployeeControllerTest {
         Mockito.when(employeeService.addEmployee(any())).thenReturn(1);
         mockMvc.perform(MockMvcRequestBuilders.post("/employee/add")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}")
+                        .content(ResourceFileReadUtils.readString("json/employee/EmployeeAdd.json"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.code").value(Result.SUCCESS_CODE))
