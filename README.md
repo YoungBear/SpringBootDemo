@@ -6,7 +6,7 @@
 
 然后，新建 `HelloController`
 
-```
+```java
 @RestController
 public class HelloController {
 
@@ -39,7 +39,7 @@ public class HelloController {
 
 logback-spring.xml的例子：
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
@@ -85,7 +85,7 @@ logback-spring.xml的例子：
 
 访问时，日志输出为：
 
-```
+```shell
 2022-02-25T22:32:49.434 CST+08:00 [http-nio-8888-exec-1] INFO  com.example.demo.service.impl.HelloServiceImpl:27 - info Hello null
 2022-02-25T22:32:49.434 CST+08:00 [http-nio-8888-exec-1] WARN  com.example.demo.service.impl.HelloServiceImpl:28 - warn Hello null
 2022-02-25T22:32:49.435 CST+08:00 [http-nio-8888-exec-1] ERROR com.example.demo.service.impl.HelloServiceImpl:29 - error Hello null
@@ -95,7 +95,7 @@ logback-spring.xml的例子：
 
 使用 `@RestController`:
 
-```
+```java
 @RestController
 @RequestMapping("/v1/book")
 public class BookController {
@@ -132,307 +132,12 @@ public class BookController {
 
 使用 curl 访问：
 
-```
+```shell
 192:SpringBootDemo youngbear$ curl http://localhost:8080/v1/book/books -X POST
 [{"name":"数学之美","publisher":"人民邮电出版社","author":"吴军"},{"name":"重构 改善既有代码的设计","publisher":"人民邮电出版社","author":"Martin Fowler"},{"name":"机器学习实战","publisher":"人民邮电出版社","author":"Peter Harrington"},{"name":"Effective Java中文版","publisher":"机械工业出版社","author":"Joshua Bloch"}]
 ```
 
 
-
-## 4. 使用 Tomcat 部署
-
-### 4.1 设置打包为 war
-
-`<packaging>war</packaging>`
-
-### 4.2 设置 war 包的名称
-
-`<finalName>Demo</finalName>`
-
-
-
-详细配置如下：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
-
-    <name>demo</name>
-    <description>Demo project for Spring Boot</description>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-        <finalName>Demo</finalName>
-    </build>
-
-
-</project>
-
-```
-
-### 4.3 配置 Application
-
-```java
-package com.example.demo;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-
-@SpringBootApplication
-public class DemoApplication extends SpringBootServletInitializer {
-
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(DemoApplication.class);
-    }
-}
-```
-
-### 4.4 配置 tomcat (可选)
-
-配置端口：
-
-tomcat 默认端口为8080，如果需要更改，则在tomcat安装目录/conf/server.xml中，更改 `<Connector` 标签的 port 属性即可。如下，我们将tomcat端口改为9090：
-
-
-
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<!--
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the "License"); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
-<!-- Note:  A "Server" is not itself a "Container", so you may not
-     define subcomponents such as "Valves" at this level.
-     Documentation at /docs/config/server.html
- -->
-<Server port="8005" shutdown="SHUTDOWN">
-  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
-  <!-- Security listener. Documentation at /docs/config/listeners.html
-  <Listener className="org.apache.catalina.security.SecurityListener" />
-  -->
-  <!--APR library loader. Documentation at /docs/apr.html -->
-  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
-  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
-  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
-  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
-  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
-
-  <!-- Global JNDI resources
-       Documentation at /docs/jndi-resources-howto.html
-  -->
-  <GlobalNamingResources>
-    <!-- Editable user database that can also be used by
-         UserDatabaseRealm to authenticate users
-    -->
-    <Resource name="UserDatabase" auth="Container"
-              type="org.apache.catalina.UserDatabase"
-              description="User database that can be updated and saved"
-              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="conf/tomcat-users.xml" />
-  </GlobalNamingResources>
-
-  <!-- A "Service" is a collection of one or more "Connectors" that share
-       a single "Container" Note:  A "Service" is not itself a "Container",
-       so you may not define subcomponents such as "Valves" at this level.
-       Documentation at /docs/config/service.html
-   -->
-  <Service name="Catalina">
-
-    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
-    <!--
-    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
-        maxThreads="150" minSpareThreads="4"/>
-    -->
-
-
-    <!-- A "Connector" represents an endpoint by which requests are received
-         and responses are returned. Documentation at :
-         Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
-         Java AJP  Connector: /docs/config/ajp.html
-         APR (HTTP/AJP) Connector: /docs/apr.html
-         Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
-    -->
-    <Connector port="9090" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
-    <!-- A "Connector" using the shared thread pool-->
-    <!--
-    <Connector executor="tomcatThreadPool"
-               port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
-    -->
-    <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443
-         This connector uses the NIO implementation that requires the JSSE
-         style configuration. When using the APR/native implementation, the
-         OpenSSL style configuration is required as described in the APR/native
-         documentation -->
-    <!--
-    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS" />
-    -->
-
-    <!-- Define an AJP 1.3 Connector on port 8009 -->
-    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
-
-
-    <!-- An Engine represents the entry point (within Catalina) that processes
-         every request.  The Engine implementation for Tomcat stand alone
-         analyzes the HTTP headers included with the request, and passes them
-         on to the appropriate Host (virtual host).
-         Documentation at /docs/config/engine.html -->
-
-    <!-- You should set jvmRoute to support load-balancing via AJP ie :
-    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
-    -->
-    <Engine name="Catalina" defaultHost="localhost">
-
-      <!--For clustering, please take a look at documentation at:
-          /docs/cluster-howto.html  (simple how to)
-          /docs/config/cluster.html (reference documentation) -->
-      <!--
-      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
-      -->
-
-      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
-           via a brute-force attack -->
-      <Realm className="org.apache.catalina.realm.LockOutRealm">
-        <!-- This Realm uses the UserDatabase configured in the global JNDI
-             resources under the key "UserDatabase".  Any edits
-             that are performed against this UserDatabase are immediately
-             available for use by the Realm.  -->
-        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
-               resourceName="UserDatabase"/>
-      </Realm>
-
-      <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
-
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
-
-        <!-- Access log processes all example.
-             Documentation at: /docs/config/valve.html
-             Note: The pattern used is equivalent to using pattern="common" -->
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log" suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-
-      </Host>
-    </Engine>
-  </Service>
-</Server>
-
-```
-
-### 4.5 构建包
-
-`mvn package`
-
-### 4.6 部署
-
-将 war 包拷贝到tomcat的 `/webapps/` 目录下，重启tomcat：
-
-```shell
-# 拷贝 war 包
-192:apache-tomcat-8.0.46 youngbear$ pwd
-/Users/youngbear/setup/apache-tomcat-8.0.46
-192:apache-tomcat-8.0.46 youngbear$ cp ~/IdeaProjects/SpringBootDemo/target/Demo.war webapps/
-# 重启 tomcat
-192:apache-tomcat-8.0.46 youngbear$ cd bin/
-192:bin youngbear$ ./shutdown.sh
-Using CATALINA_BASE:   /Users/youngbear/setup/apache-tomcat-8.0.46
-Using CATALINA_HOME:   /Users/youngbear/setup/apache-tomcat-8.0.46
-Using CATALINA_TMPDIR: /Users/youngbear/setup/apache-tomcat-8.0.46/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home
-Using CLASSPATH:       /Users/youngbear/setup/apache-tomcat-8.0.46/bin/bootstrap.jar:/Users/youngbear/setup/apache-tomcat-8.0.46/bin/tomcat-juli.jar
-
-192:bin youngbear$ ./startup.sh
-Using CATALINA_BASE:   /Users/youngbear/setup/apache-tomcat-8.0.46
-Using CATALINA_HOME:   /Users/youngbear/setup/apache-tomcat-8.0.46
-Using CATALINA_TMPDIR: /Users/youngbear/setup/apache-tomcat-8.0.46/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home
-Using CLASSPATH:       /Users/youngbear/setup/apache-tomcat-8.0.46/bin/bootstrap.jar:/Users/youngbear/setup/apache-tomcat-8.0.46/bin/tomcat-juli.jar
-Tomcat started.
-192:bin youngbear$
-
-```
-
-### 4.7 访问接口
-
-**注意：**
-
-使用 `tomcat` 的部署方式，在访问接口时，url 需要加上上下文，即 War 包的名称，部署成功时，/webapps/下会生成一个与 war 包同名的目录，访问时需要带上，如：
-
-```shell
-# 使用 SpringBoot 的jar包启动时的访问
-192:SpringBootDemo youngbear$ curl http://localhost:8080/hello -X GET
-Hello World!
-# 使用 tomcat 部署时的访问
-192:SpringBootDemo youngbear$ curl http://localhost:9090/Demo/hello -X GET
-Hello World!
-```
 
 
 
@@ -492,7 +197,7 @@ public class Result<T> {
 错误定义枚举：`ErrorEnum.java`
 
 ```java
-package com.example.demo.enums;
+package com.example.demo.infrastructure.enums;
 
 /**
  * @author youngbear
@@ -532,9 +237,9 @@ public enum ErrorEnum {
 异常类：`DemoException.java`
 
 ```java
-package com.example.demo.exception;
+package com.example.demo.infrastructure.exception;
 
-import com.example.demo.enums.ErrorEnum;
+import com.example.demo.infrastructure.enums.ErrorEnum;
 
 /**
  * @author youngbear
@@ -546,6 +251,7 @@ import com.example.demo.enums.ErrorEnum;
  */
 public class DemoException extends RuntimeException {
 
+    private static final long serialVersionUID = 1905532578117424643L;
     private final ErrorEnum errorEnum;
 
     public DemoException(ErrorEnum errorEnum) {
@@ -556,6 +262,7 @@ public class DemoException extends RuntimeException {
         super(cause);
         this.errorEnum = errorEnum;
     }
+
 
     public ErrorEnum getErrorEnum() {
         return errorEnum;
@@ -569,12 +276,12 @@ public class DemoException extends RuntimeException {
 创建工具类 `ResultUtils.java` ，进行封装返回成功信息，异常信息。
 
 ```java
-package com.example.demo.utils;
+package com.example.demo.infrastructure.utils;
 
-import com.example.demo.entity.common.Result;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
+import com.example.demo.infrastructure.entity.Result;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -593,7 +300,7 @@ public class ResultVoUtils {
      * 成功返回
      *
      * @param data 返回数据
-     * @param <T>  数据类型
+     * @param <T> 数据类型
      * @return 统一的返回值
      */
     public static <T> ResultVo<T> success(T data) {
@@ -631,9 +338,9 @@ public class ResultVoUtils {
     /**
      * 指定total，返回数据，用于分页场景
      *
-     * @param total    总数量
+     * @param total 总数量
      * @param dataList 当前数据
-     * @param <T>      泛型参数
+     * @param <T> 泛型参数
      * @return resultVo
      */
     public static <T> ResultVo<T> success(int total, List<T> dataList) {
@@ -678,22 +385,23 @@ public class ResultVoUtils {
 以 `BookController` 为例，进行正常返回对象，正常返回数组，异常返回。
 
 ```java
-package com.example.demo.controller;
+package com.example.demo.api.controller;
 
-import com.example.demo.entity.Book;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IBookService;
-import com.example.demo.utils.ResultVoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.example.demo.application.configuration.event.BookEvent;
+import com.example.demo.domain.entity.Book;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IBookService;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -705,11 +413,14 @@ import java.util.List;
  * @description
  */
 @RestController
-@RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/v1/book", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BookController {
 
     @Autowired
     private IBookService bookService;
+
+    @Resource
+    private ApplicationContext applicationContext;
 
     @RequestMapping(value = "/book-list", method = RequestMethod.POST)
     public ResultVo<Book> bookList() {
@@ -725,7 +436,10 @@ public class BookController {
     @RequestMapping(value = "one-book", method = RequestMethod.POST)
     public ResultVo<Book> oneBook(@RequestBody Book book) {
         try {
-            Book book1 = bookService.oneBook(book.getName(), book.getAuther(), book.getPublisher());
+            Book book1 = bookService.oneBook(book.getName(), book.getAuthor(), book.getPublisher());
+            BookEvent event = new BookEvent("BookEvent001");
+            event.setBook(book1);
+            applicationContext.publishEvent(event);
             return ResultVoUtils.success(book1);
         } catch (DemoException demoException) {
             return ResultVoUtils.error(demoException);
@@ -733,14 +447,15 @@ public class BookController {
     }
 
 }
+
 ```
 
 **对应`IService`文件：`IBookService.java`**
 
 ```java
-package com.example.demo.service;
+package com.example.demo.application.service;
 
-import com.example.demo.entity.Book;
+import com.example.demo.domain.entity.Book;
 
 import java.util.List;
 
@@ -756,12 +471,14 @@ public interface IBookService {
 
     /**
      * 返回测试列表
+     *
      * @return
      */
     List<Book> bookList();
 
     /**
      * 构造一个书的对象
+     *
      * @param name
      * @param author
      * @param publisher
@@ -776,17 +493,17 @@ public interface IBookService {
 **Service实现类：`BookServiceImpl.java`**
 
 ```java
-package com.example.demo.service.impl;
+package com.example.demo.application.service.impl;
 
-import com.example.demo.entity.Book;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IBookService;
+import com.example.demo.application.service.IBookService;
+import com.example.demo.domain.entity.Book;
+import com.example.demo.infrastructure.exception.DemoException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.enums.ErrorEnum.BOOK_NAME_NULL_ERROR;
+import static com.example.demo.infrastructure.enums.ErrorEnum.BOOK_NAME_NULL_ERROR;
 
 /**
  * @author youngbear
@@ -804,19 +521,19 @@ public class BookServiceImpl implements IBookService {
         Book b1 = new Book();
         b1.setName("数学之美");
         b1.setPublisher("人民邮电出版社");
-        b1.setAuther("吴军");
+        b1.setAuthor("吴军");
         Book b2 = new Book();
         b2.setName("重构 改善既有代码的设计");
         b2.setPublisher("人民邮电出版社");
-        b2.setAuther("Martin Fowler");
+        b2.setAuthor("Martin Fowler");
         Book b3 = new Book();
         b3.setName("机器学习实战");
         b3.setPublisher("人民邮电出版社");
-        b3.setAuther("Peter Harrington");
+        b3.setAuthor("Peter Harrington");
         Book b4 = new Book();
         b4.setName("Effective Java中文版");
         b4.setPublisher("机械工业出版社");
-        b4.setAuther("Joshua Bloch");
+        b4.setAuthor("Joshua Bloch");
         books.add(b1);
         books.add(b2);
         books.add(b3);
@@ -831,7 +548,7 @@ public class BookServiceImpl implements IBookService {
         }
         Book book = new Book();
         book.setName(name);
-        book.setAuther(author);
+        book.setAuthor(author);
         book.setPublisher(publisher);
         return book;
     }
@@ -942,12 +659,12 @@ curl --location --request POST 'http://localhost:8888/v1/book/one-book' \
 使用注解 `@RestControllerAdvice`，处理全局异常，在请求发生异常时，会通过该类进行处理：
 
 ```java
-package com.example.demo.configuration;
+package com.example.demo.application.configuration;
 
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -1092,13 +809,21 @@ public class Employee {
 java 代码：
 
 ```java
-package com.example.demo.dao;
+package com.example.demo.domain.repository.dao;
 
-import com.example.demo.entity.EmployeeVo;
+import com.example.demo.domain.entity.EmployeeVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * @author youngbear
+ * @email youngbear@aliyun.com
+ * @date 2019-07-21 18:21
+ * @blog https://blog.csdn.net/next_second
+ * @github https://github.com/YoungBear
+ * @description
+ */
 @Mapper
 public interface IEmployeeDao {
 
@@ -1120,17 +845,17 @@ public interface IEmployeeDao {
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.IEmployeeDao">
+<mapper namespace="com.example.demo.domain.repository.dao.IEmployeeDao">
 
-    <resultMap id="EmployeeResultMap" type="com.example.demo.entity.EmployeeVo">
-        <resultVo column="ID" jdbcType="INTEGER" property="id"/>
-        <resultVo column="NAME" jdbcType="VARCHAR" property="name"/>
-        <resultVo column="HIRE_DATE" jdbcType="BIGINT" property="hireDate"/>
-        <resultVo column="SALARY" jdbcType="DECIMAL" property="salary"/>
-        <resultVo column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
+    <resultMap id="EmployeeResultMap" type="com.example.demo.domain.entity.EmployeeVo">
+        <result column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="HIRE_DATE" jdbcType="BIGINT" property="hireDate"/>
+        <result column="SALARY" jdbcType="DECIMAL" property="salary"/>
+        <result column="DEPT_NO" jdbcType="INTEGER" property="deptNo"/>
     </resultMap>
 
-    <insert id="add" parameterType="com.example.demo.entity.EmployeeVo">
+    <insert id="add" parameterType="com.example.demo.domain.entity.EmployeeVo">
         INSERT INTO EMPLOYEE (ID, NAME, HIRE_DATE, SALARY, DEPT_NO)
         VALUES (#{id}, #{name}, #{hireDate}, #{salary}, #{deptNo})
     </insert>
@@ -1139,7 +864,7 @@ public interface IEmployeeDao {
         DELETE FROM EMPLOYEE WHERE ID = #{id}
     </delete>
 
-    <update id="update" parameterType="com.example.demo.entity.EmployeeVo">
+    <update id="update" parameterType="com.example.demo.domain.entity.EmployeeVo">
         UPDATE EMPLOYEE SET
         NAME=#{name}, HIRE_DATE=#{hireDate}, SALARY=#{salary}, DEPT_NO=#{deptNo}
         WHERE ID = #{id}
@@ -1164,9 +889,9 @@ public interface IEmployeeDao {
 IService:
 
 ```java
-package com.example.demo.service;
+package com.example.demo.application.service;
 
-import com.example.demo.entity.EmployeeVo;
+import com.example.demo.domain.entity.EmployeeVo;
 
 import java.util.List;
 
@@ -1182,6 +907,7 @@ public interface IEmployeeService {
 
     /**
      * 添加一个 Employee
+     *
      * @param employeeVo
      * @return 1-添加成功
      */
@@ -1189,6 +915,7 @@ public interface IEmployeeService {
 
     /**
      * 根据 id 删除一个 Employee
+     *
      * @param id
      * @return 1-删除成功
      */
@@ -1196,6 +923,7 @@ public interface IEmployeeService {
 
     /**
      * 更新一个 Employee
+     *
      * @param employeeVo
      * @return 更新成功后的结果
      */
@@ -1203,6 +931,7 @@ public interface IEmployeeService {
 
     /**
      * 根据 id 查询 Employee
+     *
      * @param id
      * @return
      */
@@ -1210,23 +939,23 @@ public interface IEmployeeService {
 
     /**
      * 查询所有 Employee
+     *
      * @return
      */
     List<EmployeeVo> selectAll();
 
 }
 
-
 ```
 
 ServiceImpl:
 
 ```java
-package com.example.demo.service.impl;
+package com.example.demo.application.service.impl;
 
-import com.example.demo.dao.IEmployeeDao;
-import com.example.demo.entity.EmployeeVo;
-import com.example.demo.service.IEmployeeService;
+import com.example.demo.domain.repository.dao.IEmployeeDao;
+import com.example.demo.domain.entity.EmployeeVo;
+import com.example.demo.application.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -1272,25 +1001,30 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeeDao.selectAll();
     }
 }
+
 ```
 
 Controller:
 
 ```java
-package com.example.demo.controller;
+package com.example.demo.api.controller;
 
-import com.example.demo.entity.EmployeeVo;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.service.IEmployeeService;
-import com.example.demo.utils.ResultVoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.domain.entity.EmployeeVo;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IEmployeeService;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author youngbear
@@ -1303,13 +1037,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
-    @Autowired
+    @Resource
     private IEmployeeService employeeService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResultVo<Integer> add(@RequestBody EmployeeVo employeeVo) {
+    public ResultVo<Integer> add(HttpServletRequest request, @RequestBody EmployeeVo employeeVo) {
         try {
+            String userAccount = request.getHeader("X-USER-ACCOUNT");
+            LOGGER.info("userAccount: {}", userAccount);
             return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
         } catch (DemoException demoException) {
             return ResultVoUtils.error(demoException);
@@ -1500,10 +1237,10 @@ spring:
 ##### 3.3 添加测试代码
 
 ```java
-package com.example.demo.controller;
+package com.example.demo.api.controller;
 
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.utils.ResultVoUtils;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1608,10 +1345,10 @@ curl -X GET "http://localhost:8888/redis/getString?key=name1" -H "accept: applic
 RestTemplateUtils工具类代码：
 
 ```java
-package com.example.demo.utils;
+package com.example.demo.infrastructure.utils;
 
-import com.example.demo.enums.ErrorEnum;
-import com.example.demo.exception.DemoException;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -1711,15 +1448,15 @@ public class RestTemplateUtils {
 验证：
 
 ```java
-package com.example.demo.controller;
+package com.example.demo.api.controller;
 
-import com.example.demo.entity.Book;
-import com.example.demo.entity.EmployeeVo;
-import com.example.demo.entity.common.ResultVo;
-import com.example.demo.exception.DemoException;
-import com.example.demo.utils.RestTemplateUtils;
-import com.example.demo.utils.ResultVoUtils;
-import com.google.gson.Gson;
+import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.entity.EmployeeVo;
+import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.exception.DemoException;
+import com.example.demo.application.service.IHelloService;
+import com.example.demo.infrastructure.utils.RestTemplateUtils;
+import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1746,8 +1483,23 @@ import javax.annotation.Resource;
 public class HelloController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
 
+    @Autowired
+    private IHelloService helloService;
+
     @Resource
     private RestTemplateUtils restTemplateUtils;
+
+    @RequestMapping(value = "/hi", method = RequestMethod.GET)
+    public ResultVo<String> hi(@RequestParam(required = false) String name) {
+
+        try {
+            String hi = helloService.hi(name);
+            return ResultVoUtils.success(hi);
+        } catch (DemoException demoException) {
+            return ResultVoUtils.error(demoException);
+        }
+
+    }
 
     @GetMapping(value = "/request-get")
     public ResultVo<Void> requestGet() {
@@ -1756,7 +1508,6 @@ public class HelloController {
                 new EmployeeVoParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
         EmployeeVo employeeVo = resultVo.getResult().getData().get(0);
-        LOGGER.info("employeeVo: {}", new Gson().toJson(employeeVo));
         return ResultVoUtils.success(null);
     }
 
@@ -1771,7 +1522,6 @@ public class HelloController {
                 book, new BookParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
         Book responseBook = resultVo.getResult().getData().get(0);
-        LOGGER.info("employeeVo: {}", new Gson().toJson(responseBook));
         return ResultVoUtils.success(null);
     }
 
@@ -1794,5 +1544,8 @@ public class HelloController {
 
 
 
-## [Demo GitHub地址](https://github.com/YoungBear/SpringBootDemo)
+## 源代码地址
+
+ - [github](https://github.com/YoungBear/SpringBootDemo)
+ - [gitee](https://gitee.com/YoungBear2023/spring-boot-demo)
 
