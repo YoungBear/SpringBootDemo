@@ -3,11 +3,12 @@ package com.example.demo.utils;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.common.Result;
 import com.example.demo.entity.common.ResultVo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author youngbear
@@ -26,8 +27,8 @@ public class ResultVoUtilsTest {
         book.setPublisher("人民邮电出版社");
         book.setName("数学之美");
         ResultVo<Book> resultVo = ResultVoUtils.success(book);
-        Assertions.assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
-        Assertions.assertEquals(1, resultVo.getResult().getTotal().intValue());
+        assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
+        assertEquals(1, resultVo.getResult().getTotal().intValue());
     }
 
     @Test
@@ -44,8 +45,8 @@ public class ResultVoUtilsTest {
         bookList.add(book);
         bookList.add(book2);
         ResultVo<Book> resultVo = ResultVoUtils.success(bookList);
-        Assertions.assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
-        Assertions.assertEquals(2, resultVo.getResult().getTotal().intValue());
+        assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
+        assertEquals(2, resultVo.getResult().getTotal().intValue());
     }
 
     @Test
@@ -62,7 +63,7 @@ public class ResultVoUtilsTest {
         bookList.add(book);
         bookList.add(book2);
         ResultVo<Book> resultVo = ResultVoUtils.success(10, bookList);
-        Assertions.assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
-        Assertions.assertEquals(10, resultVo.getResult().getTotal().intValue());
+        assertEquals(Result.SUCCESS_CODE, resultVo.getCode());
+        assertEquals(10, resultVo.getResult().getTotal().intValue());
     }
 }
