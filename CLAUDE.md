@@ -20,7 +20,7 @@ mvn spring-boot:run
 
 ## 架构
 
-这是一个使用 **领域驱动设计（DDD）** 架构的 Spring Boot 2.7.18 应用。
+这是一个使用 **领域驱动设计（DDD）** 架构的 Spring Boot 3.4.4 应用。
 
 ### 包结构
 
@@ -57,10 +57,10 @@ com.example.demo
 
 ### 技术版本
 
-- Spring Boot：2.7.18
-- JDK：1.8
+- Spring Boot：3.4.4
+- JDK：21
 - MySQL：8.4.0
-- MyBatis：2.3.2
+- MyBatis：3.0.4
 
 ### 依赖
 
