@@ -53,4 +53,13 @@ public interface IEmployeeService {
      */
     List<EmployeeVo> selectAll();
 
+    /**
+     * 分页查询 Employee
+     *
+     * @param offset 起始位置
+     * @param limit  每页数量
+     * @return
+     */
+    List<EmployeeVo> selectByPage(int offset, int limit);
+
 }

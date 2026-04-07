@@ -34,4 +34,8 @@
         SELECT * FROM EMPLOYEE
     </select>
 
+    <select id="selectByPage" resultMap="EmployeeResultMap">
+        SELECT * FROM EMPLOYEE LIMIT #{offset}, #{limit}
+    </select>
+
 </mapper>

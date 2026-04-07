@@ -1,5 +1,6 @@
 package com.example.demo.api.controller;
 
+import com.example.demo.application.configuration.GlobalExceptionHandler;
 import com.example.demo.application.service.IEmployeeService;
 import com.example.demo.domain.entity.EmployeeVo;
 import com.example.demo.infrastructure.entity.Result;
@@ -44,7 +45,9 @@ public class EmployeeControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(employeeController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test

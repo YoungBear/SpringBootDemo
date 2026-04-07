@@ -2,6 +2,7 @@ package com.example.demo.domain.repository.dao;
 
 import com.example.demo.domain.entity.EmployeeVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface IEmployeeDao {
     EmployeeVo findEmployeeById(Integer id);
 
     List<EmployeeVo> selectAll();
+
+    List<EmployeeVo> selectByPage(@Param("offset") int offset, @Param("limit") int limit);
 }

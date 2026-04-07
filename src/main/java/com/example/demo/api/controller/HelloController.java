@@ -4,12 +4,12 @@ import com.example.demo.application.service.IHelloService;
 import com.example.demo.domain.entity.Book;
 import com.example.demo.domain.entity.EmployeeVo;
 import com.example.demo.infrastructure.entity.ResultVo;
-import com.example.demo.infrastructure.exception.DemoException;
 import com.example.demo.infrastructure.utils.RestTemplateUtils;
 import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,21 +39,18 @@ public class HelloController {
     @Resource
     private RestTemplateUtils restTemplateUtils;
 
+    @Value("${app.base-url:http://localhost:8888}")
+    private String baseUrl;
+
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     public ResultVo<String> hi(@RequestParam(required = false) String name) {
-
-        try {
-            String hi = helloService.hi(name);
-            return ResultVoUtils.success(hi);
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
-
+        String hi = helloService.hi(name);
+        return ResultVoUtils.success(hi);
     }
 
     @GetMapping(value = "/request-get")
     public ResultVo<Void> requestGet() {
-        String url = "http://localhost:8888/employee/query/2";
+        String url = baseUrl + "/employee/query/2";
         ResultVo<EmployeeVo> resultVo = restTemplateUtils.get(url,
                 new EmployeeVoParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
@@ -67,7 +64,7 @@ public class HelloController {
         book.setAuthor("吴军");
         book.setPublisher("人民邮电出版社");
         book.setName("数学之美");
-        String url = "http://localhost:8888/v1/book/one-book";
+        String url = baseUrl + "/v1/book/one-book";
         ResultVo<Book> resultVo = restTemplateUtils.post(url,
                 book, new BookParameterizedTypeReference());
         LOGGER.info("code: {}", resultVo.getCode());
@@ -78,12 +75,6 @@ public class HelloController {
     private static class EmployeeVoParameterizedTypeReference extends ParameterizedTypeReference<ResultVo<EmployeeVo>> {
     }
 
-    ;
-
     private static class BookParameterizedTypeReference extends ParameterizedTypeReference<ResultVo<Book>> {
     }
-
-    ;
-
-
 }

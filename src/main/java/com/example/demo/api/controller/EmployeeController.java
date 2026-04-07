@@ -3,7 +3,6 @@ package com.example.demo.api.controller;
 import com.example.demo.application.service.IEmployeeService;
 import com.example.demo.domain.entity.EmployeeVo;
 import com.example.demo.infrastructure.entity.ResultVo;
-import com.example.demo.infrastructure.exception.DemoException;
 import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,48 +34,28 @@ public class EmployeeController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResultVo<Integer> add(HttpServletRequest request, @RequestBody EmployeeVo employeeVo) {
-        try {
-            String userAccount = request.getHeader("X-USER-ACCOUNT");
-            LOGGER.info("userAccount: {}", userAccount);
-            return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
+        String userAccount = request.getHeader("X-USER-ACCOUNT");
+        LOGGER.info("userAccount: {}", userAccount);
+        return ResultVoUtils.success(employeeService.addEmployee(employeeVo));
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public ResultVo<Integer> deleteById(@PathVariable("id") Integer id) {
-        try {
-            return ResultVoUtils.success(employeeService.deleteEmployee(id));
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
+        return ResultVoUtils.success(employeeService.deleteEmployee(id));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResultVo<EmployeeVo> updateEmployee(@RequestBody EmployeeVo employeeVo) {
-        try {
-            return ResultVoUtils.success(employeeService.updateEmployee(employeeVo));
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
+        return ResultVoUtils.success(employeeService.updateEmployee(employeeVo));
     }
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     public ResultVo<EmployeeVo> queryById(@PathVariable("id") Integer id) {
-        try {
-            return ResultVoUtils.success(employeeService.queryEmployee(id));
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
+        return ResultVoUtils.success(employeeService.queryEmployee(id));
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
     public ResultVo<EmployeeVo> queryAll() {
-        try {
-            return ResultVoUtils.success(employeeService.selectAll());
-        } catch (DemoException demoException) {
-            return ResultVoUtils.error(demoException);
-        }
+        return ResultVoUtils.success(employeeService.selectAll());
     }
 }

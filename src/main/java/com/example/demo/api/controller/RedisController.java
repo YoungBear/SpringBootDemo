@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping(value = "redis", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RedisController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisController.class);
 
     @Autowired
     private StringRedisTemplate redisTemplate;

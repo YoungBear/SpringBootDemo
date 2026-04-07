@@ -2,6 +2,8 @@ package com.example.demo.api.controller;
 
 import com.example.demo.domain.entity.DivideEntity;
 import com.example.demo.infrastructure.entity.ResultVo;
+import com.example.demo.infrastructure.enums.ErrorEnum;
+import com.example.demo.infrastructure.exception.DemoException;
 import com.example.demo.infrastructure.utils.ResultVoUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @github https://github.com/YoungBear
  * @description
  */
-
 @RestController
 @RequestMapping(value = "calculator", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CalculatorController {
@@ -26,10 +27,10 @@ public class CalculatorController {
     public ResultVo<String> divide(@RequestBody DivideEntity divideEntity) {
         int dividend = divideEntity.getDividend();
         int divisor = divideEntity.getDivisor();
+        if (divisor == 0) {
+            throw new DemoException(ErrorEnum.DIVISOR_ZERO_ERROR);
+        }
         int quotients = dividend / divisor;
         return ResultVoUtils.success(String.valueOf(quotients));
-
     }
-
-
 }

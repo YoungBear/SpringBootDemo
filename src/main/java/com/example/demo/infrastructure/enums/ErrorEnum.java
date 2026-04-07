@@ -13,7 +13,8 @@ public enum ErrorEnum {
     UNKNOWN_ERROR(-1, "unknown error."),
     HTTP_REQUEST_ERROR(9999, "http request error"),
     BOOK_NAME_NULL_ERROR(10001, "book name is null."),
-    HELLO_NAME_NULL_ERROR(20001, "hi name is null.");
+    HELLO_NAME_NULL_ERROR(20001, "hi name is null."),
+    DIVISOR_ZERO_ERROR(30001, "divisor cannot be zero.");
 
 
     final Integer errorCode;

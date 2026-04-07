@@ -5,6 +5,7 @@ import com.example.demo.domain.entity.EmployeeVo;
 import com.example.demo.domain.repository.dao.IEmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,16 +24,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @Override
+    @Transactional
     public Integer addEmployee(EmployeeVo employeeVo) {
         return employeeDao.add(employeeVo);
     }
 
     @Override
+    @Transactional
     public Integer deleteEmployee(Integer id) {
         return employeeDao.delete(id);
     }
 
     @Override
+    @Transactional
     public EmployeeVo updateEmployee(EmployeeVo employeeVo) {
         employeeDao.update(employeeVo);
         return employeeDao.findEmployeeById(employeeVo.getId());
@@ -46,5 +50,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public List<EmployeeVo> selectAll() {
         return employeeDao.selectAll();
+    }
+
+    @Override
+    public List<EmployeeVo> selectByPage(int offset, int limit) {
+        return employeeDao.selectByPage(offset, limit);
     }
 }
